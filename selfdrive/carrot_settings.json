@@ -2,7 +2,7 @@
   "apilot": 20260113,
   "params": [
     {
-      "group": "CARROTMAN",
+      "group": "당근",
       "name": "CarrotSpeedControl",
       "title": "CarrotMan 과속카메라 감속",
       "descr": "TMap/카카오맵 SDI 연동 자동 감속\n0:OFF, 1:ON",
@@ -15,7 +15,7 @@
       "unit": 1
     },
     {
-      "group": "CARROTMAN",
+      "group": "당근",
       "name": "CarrotMobileCamera",
       "title": "이동식 카메라 감속",
       "descr": "이동식(삼각대) 카메라도 감속\n0:무시, 1:감속",
@@ -28,7 +28,7 @@
       "unit": 1
     },
     {
-      "group": "CARROTMAN",
+      "group": "당근",
       "name": "CarrotSpeedBump",
       "title": "과속방지턱 감속",
       "descr": "방지턱 앞 35km/h 감속\n0:OFF, 1:ON",
@@ -41,7 +41,7 @@
       "unit": 1
     },
     {
-      "group": "CARROTMAN",
+      "group": "당근",
       "name": "CarrotSectionControl",
       "title": "구간단속 감속",
       "descr": "구간단속 구간 내 속도 유지\n0:OFF, 1:ON",
@@ -54,7 +54,7 @@
       "unit": 1
     },
     {
-      "group": "CARROTMAN",
+      "group": "당근",
       "name": "ShowRadarInfo",
       "title": "앞차 박스 표시",
       "descr": "레이다 정보(거리/속도) 박스 표시\n0:OFF, 1:ON",
@@ -246,19 +246,6 @@
       "min": 0,
       "max": 1,
       "default": 0,
-      "unit": 1
-    },
-    {
-      "group": "AI설정",
-      "name": "EndToEndToggle",
-      "title": "E2E 모드",
-      "descr": "End-to-End 주행\n0:OFF, 1:ON",
-      "egroup": "AI",
-      "etitle": "E2E Mode",
-      "edescr": "End-to-End driving\n0:OFF, 1:ON",
-      "min": 0,
-      "max": 1,
-      "default": 1,
       "unit": 1
     },
     {

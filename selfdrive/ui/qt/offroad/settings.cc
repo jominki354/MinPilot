@@ -68,12 +68,7 @@ TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
       "운전자 카메라 데이터를 업로드하여 운전자 모니터링 알고리즘 개선을 돕습니다.",
       "../assets/offroad/icon_monitoring.png",
     },
-    {
-      "EndToEndToggle",
-      "\U0001f96c 차선 무시 주행 (Laneless 모드) \U0001f96c",
-      "이 모드에서는 오픈파일럿이 차선 정보를 무시하고 사람이 운전하는 것처럼 주행하려고 합니다.",
-      "../assets/offroad/icon_road.png",
-    },
+
 #ifdef ENABLE_MAPS
     {
       "NavSettingTime24h",
