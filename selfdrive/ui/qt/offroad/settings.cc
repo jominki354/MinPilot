@@ -5,6 +5,8 @@
 #include <string>
 
 #include <QDebug>
+#include <QScroller>
+#include <QScrollerProperties>
 
 #ifndef QCOM
 #include "selfdrive/ui/qt/offroad/networking.h"
