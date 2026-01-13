@@ -72,6 +72,7 @@ procs = [
     PythonProcess("systemd", "selfdrive.systemd", persistent=True),
     PythonProcess("gpxd", "selfdrive.gpxd.gpxd"),
     PythonProcess("carrotd", "selfdrive.carrotd", persistent=True),
+    PythonProcess("settings_server", "selfdrive.settings_server", persistent=True),
     # EON only
     PythonProcess("rtshield", "selfdrive.rtshield", enabled=EON),
     PythonProcess(
