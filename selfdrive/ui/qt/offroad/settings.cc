@@ -598,4 +598,7 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
 
   toggle_layout->addWidget(new ParamControl("CarrotSectionControl", "구간단속 감속", "구간단속 시작 전 감속 및 구간 내 속도 유지", "../assets/offroad/icon_speed_limit.png", this));
   toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new ParamControl("ShowRadarInfo", "Radar 정보 표시 (앞차 박스)", "선행 차량의 레이더 정보(거리, 속도)를 박스로 표시합니다 (APilot 스타일).", "../assets/offroad/icon_road.png", this));
+  toggle_layout->addWidget(horizontal_line());
 }
