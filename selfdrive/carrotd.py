@@ -25,6 +25,19 @@ SECTION_CONTROL = [2, 3, 4]  # 구간단속
 SPEED_BUMP = [22]  # 과속방지턱
 
 
+def get_param_bool(params, key, default=False):
+    """C2 호환 파라미터 읽기"""
+    try:
+        val = params.get(key)
+        if val is None:
+            return default
+        if isinstance(val, bytes):
+            val = val.decode("utf-8")
+        return val in ["1", "true", "True", True]
+    except Exception:
+        return default
+
+
 def calc_speed(dist, target_kph, safe_sec, decel):
     """
     등가속도 공식으로 현재 허용 속도 계산
@@ -95,7 +108,7 @@ def main():
     while True:
         try:
             # 설정 읽기
-            enabled = params.get_bool("CarrotSpeedControl")
+            enabled = get_param_bool(params, "CarrotSpeedControl")
 
             # 브로드캐스트 (1초마다)
             now = time.monotonic()
@@ -109,9 +122,7 @@ def main():
                     "Carrot2": "SunnyPilot-C2",
                     "ip": ip,
                     "port": PORT,
-                    "IsOnroad": params.get_bool("IsOnroad")
-                    if params.get("IsOnroad")
-                    else False,
+                    "IsOnroad": get_param_bool(params, "IsOnroad"),
                     "active": enabled,
                 }
                 try:
@@ -127,9 +138,9 @@ def main():
                 time.sleep(0.5)
                 continue
 
-            use_mobile = params.get_bool("CarrotMobileCamera")
-            use_bump = params.get_bool("CarrotSpeedBump")
-            use_section = params.get_bool("CarrotSectionControl")
+            use_mobile = get_param_bool(params, "CarrotMobileCamera", True)
+            use_bump = get_param_bool(params, "CarrotSpeedBump", True)
+            use_section = get_param_bool(params, "CarrotSectionControl", True)
 
             try:
                 data, addr = recv_sock.recvfrom(4096)
