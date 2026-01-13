@@ -312,10 +312,12 @@ class CarInterface(CarInterfaceBase):
             smartDsu or ret.enableDsu or candidate in TSS2_CAR
         )
 
-        if (
-            Params().get_bool("ToyotaEnforceStockLongitudinal")
-            and ret.openpilotLongitudinalControl
-        ):
+        try:
+            enforce_stock_long = Params().get_bool("ToyotaEnforceStockLongitudinal")
+        except Exception:
+            enforce_stock_long = False
+
+        if enforce_stock_long and ret.openpilotLongitudinalControl:
             ret.openpilotLongitudinalControl = False
             ret.enableDsu = False
 
