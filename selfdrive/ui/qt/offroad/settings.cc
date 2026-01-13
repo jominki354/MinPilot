@@ -592,4 +592,13 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(new OnroadScreenOffBrightness());
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new MaxTimeOffroad());
+
+  toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new ToyotaEnforceStockLongitudinal());
+  toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new CustomAccIncrementsEnabled());
+  toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new CustomAccIncrementsShort());
+  toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new CustomAccIncrementsLong());
 }

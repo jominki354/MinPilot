@@ -85,6 +85,156 @@ ForceCarRecognition::ForceCarRecognition(QWidget* parent): QWidget(parent) {
   main_layout->addWidget(list);
 }
 
+// Toyota Enforce Stock Longitudinal
+ToyotaEnforceStockLongitudinal::ToyotaEnforceStockLongitudinal() : ParamControl("ToyotaEnforceStockLongitudinal",
+                                                                                "토요타: 순정 가감속 제어 사용",
+                                                                                "오픈파일럿의 가감속 제어 대신 토요타 순정 ACC의 가감속 제어를 강제로 사용합니다.",
+                                                                                "../assets/offroad/icon_road.png") {
+}
+
+// Custom Acc Increments Enabled
+CustomAccIncrementsEnabled::CustomAccIncrementsEnabled() : ParamControl("CustomAccIncrementsEnabled",
+                                                                        "사용자 지정 바로가기 속도 사용",
+                                                                        "크루즈 컨트롤 속도 조절 버튼을 눌렀을 때의 속도 변경 단위를 직접 설정합니다.",
+                                                                        "../assets/offroad/icon_road.png") {
+}
+
+// Custom Acc Increments Short
+CustomAccIncrementsShort::CustomAccIncrementsShort() : AbstractControl("짧게 누르기 속도 변경 단위",
+                                                                       "크루즈 컨트롤 속도 조절 버튼을 짧게 눌렀을 때 변경될 속도 단위를 설정합니다.",
+                                                                       "../assets/offroad/icon_metric.png") {
+
+  label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  label.setStyleSheet("color: #e0e879");
+  hlayout->addWidget(&label);
+
+  btnminus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 50px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnplus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 50px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnminus.setFixedSize(150, 100);
+  btnplus.setFixedSize(150, 100);
+  hlayout->addWidget(&btnminus);
+  hlayout->addWidget(&btnplus);
+
+  QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("CustomAccIncrementsShort"));
+    int value = str.toInt();
+    value = value - 1;
+    if (value <= 1 ) {
+      value = 1;
+    }
+    QString values = QString::number(value);
+    params.put("CustomAccIncrementsShort", values.toStdString());
+    refresh();
+  });
+
+  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("CustomAccIncrementsShort"));
+    int value = str.toInt();
+    value = value + 1;
+    if (value >= 10 ) {
+      value = 10;
+    }
+    QString values = QString::number(value);
+    params.put("CustomAccIncrementsShort", values.toStdString());
+    refresh();
+  });
+  refresh();
+}
+
+void CustomAccIncrementsShort::refresh() {
+  QString option = QString::fromStdString(params.get("CustomAccIncrementsShort"));
+  if (option == "0") {
+     params.put("CustomAccIncrementsShort", "1");
+     label.setText(QString::fromStdString("1") + "km/h");
+  } else {
+     label.setText(QString::fromStdString(params.get("CustomAccIncrementsShort")) + "km/h");
+  }
+  btnminus.setText("-");
+  btnplus.setText("+");
+}
+
+// Custom Acc Increments Long
+CustomAccIncrementsLong::CustomAccIncrementsLong() : AbstractControl("길게 누르기 속도 변경 단위",
+                                                                       "크루즈 컨트롤 속도 조절 버튼을 길게 눌렀을 때 변경될 속도 단위를 설정합니다.",
+                                                                       "../assets/offroad/icon_metric.png") {
+
+  label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  label.setStyleSheet("color: #e0e879");
+  hlayout->addWidget(&label);
+
+  btnminus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 50px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnplus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 50px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnminus.setFixedSize(150, 100);
+  btnplus.setFixedSize(150, 100);
+  hlayout->addWidget(&btnminus);
+  hlayout->addWidget(&btnplus);
+
+  QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("CustomAccIncrementsLong"));
+    int value = str.toInt();
+    value = value - 5;
+    if (value <= 5 ) {
+      value = 5;
+    }
+    QString values = QString::number(value);
+    params.put("CustomAccIncrementsLong", values.toStdString());
+    refresh();
+  });
+
+  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("CustomAccIncrementsLong"));
+    int value = str.toInt();
+    value = value + 5;
+    if (value >= 20 ) {
+      value = 20;
+    }
+    QString values = QString::number(value);
+    params.put("CustomAccIncrementsLong", values.toStdString());
+    refresh();
+  });
+  refresh();
+}
+
+void CustomAccIncrementsLong::refresh() {
+  QString option = QString::fromStdString(params.get("CustomAccIncrementsLong"));
+  if (option == "0") {
+     params.put("CustomAccIncrementsLong", "5");
+     label.setText(QString::fromStdString("5") + "km/h");
+  } else {
+     label.setText(QString::fromStdString(params.get("CustomAccIncrementsLong")) + "km/h");
+  }
+  btnminus.setText("-");
+  btnplus.setText("+");
+}
+
 // Auto Lane Change Timer (ALCT)
 AutoLaneChangeTimer::AutoLaneChangeTimer() : AbstractControl("자동 차선 변경 타이머",
                                                              "방향지시등 사용 시 자동 차선 변경 작동을 지연시킵니다. 타이머가 설정된 경우 핸들을 살짝 돌려주지 않아도 됩니다. (Nudgeless)\n이 기능 사용 시 주의하십시오. 교통 및 도로 상황이 안전할 때만 사용하십시오.",

@@ -7,6 +7,50 @@
 
 #include "selfdrive/ui/qt/widgets/controls.h"
 
+class ToyotaEnforceStockLongitudinal : public ParamControl {
+  Q_OBJECT
+
+public:
+  ToyotaEnforceStockLongitudinal();
+};
+
+class CustomAccIncrementsEnabled : public ParamControl {
+  Q_OBJECT
+
+public:
+  CustomAccIncrementsEnabled();
+};
+
+class CustomAccIncrementsShort : public AbstractControl {
+  Q_OBJECT
+
+public:
+  CustomAccIncrementsShort();
+
+private:
+  QPushButton btnplus;
+  QPushButton btnminus;
+  QLabel label;
+  Params params;
+
+  void refresh();
+};
+
+class CustomAccIncrementsLong : public AbstractControl {
+  Q_OBJECT
+
+public:
+  CustomAccIncrementsLong();
+
+private:
+  QPushButton btnplus;
+  QPushButton btnminus;
+  QLabel label;
+  Params params;
+
+  void refresh();
+};
+
 class ForceCarRecognition : public QWidget
 {
   Q_OBJECT
