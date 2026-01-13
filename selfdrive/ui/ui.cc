@@ -238,6 +238,7 @@ static void update_status(UIState *s) {
       s->scene.speed_limit_perc_offset = Params().getBool("SpeedLimitPercOffset");
       s->scene.debug_snapshot_enabled = Params().getBool("EnableDebugSnapshot");
       s->scene.dev_ui_enabled = std::stoi(Params().get("DevUI"));
+      s->scene.show_radar_info = Params().getBool("ShowRadarInfo");
     }
     // Invisible until we receive a calibration message.
     s->scene.world_objects_visible = false;

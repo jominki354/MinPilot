@@ -145,6 +145,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"LateralTorqueCustom", PERSISTENT},
     {"LateralTorqueAccelFactor", PERSISTENT},
     {"LateralTorqueFriction", PERSISTENT},
+    {"ShowRadarInfo", PERSISTENT},
     {"IsOffroad", CLEAR_ON_MANAGER_START},
     {"IsOnroad", PERSISTENT},
     {"IsRHD", PERSISTENT},

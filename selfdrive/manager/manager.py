@@ -68,6 +68,7 @@ def manager_init():
         ("SpeedLimitControl", "1"),
         ("SpeedLimitPercOffset", "1"),
         ("TurnSpeedControl", "1"),
+        ("ShowRadarInfo", "1"),
         ("TurnVisionControl", "1"),
         ("LateralTorqueCustom", "0"),
         ("LateralTorqueAccelFactor", "2500"),

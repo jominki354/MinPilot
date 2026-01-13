@@ -570,6 +570,8 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new MaxTimeOffroad());
   toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new ParamControl("ShowRadarInfo", "Radar 정보 표시 (앞차 박스)", "선행 차량의 레이더 정보(거리, 속도)를 박스로 표시합니다 (APilot 스타일).", "../assets/offroad/icon_road.png", this));
+  toggle_layout->addWidget(horizontal_line());
 
   // --- 4. 조향 설정 (Lateral Control) ---
   toggle_layout->addWidget(header("조향 설정"));

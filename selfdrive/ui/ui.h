@@ -113,6 +113,8 @@ typedef struct UIScene {
 
   int dynamic_lane_profile;
 
+  bool show_radar_info;
+
   bool read_params = false;
   int onroadScreenOff, onroadScreenOffBrightness, osoTimer, brightness, awake;
   bool touched2 = false;

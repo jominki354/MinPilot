@@ -1131,6 +1131,46 @@ void NvgWindow::drawLead(QPainter &painter, const cereal::ModelDataV2::LeadDataV
   QPointF chevron[] = {{x + (sz * 1.25), y + sz}, {x, y}, {x - (sz * 1.25), y + sz}};
   painter.setBrush(redColor(fillAlpha));
   painter.drawPolygon(chevron, std::size(chevron));
+
+  // Draw Radar Info (APilot Style)
+  if (QUIState::ui_state.scene.show_radar_info) {
+    float v_ego = (*QUIState::ui_state.sm)["carState"].getCarState().getVEgo();
+    float real_speed = (v_ego + v_rel) * 3.6; // km/h
+
+    QString speedStr = QString::number(real_speed, 'f', 0);
+    QString distStr = QString::number(d_rel, 'f', 0) + "m";
+
+    QColor boxColor = QColor(36, 174, 30, 200); // Green
+    if (v_rel < -1.5) { // Closing in (approaching)
+      boxColor = QColor(201, 34, 49, 200); // Red
+    }
+
+    painter.setFont(QFont("Open Sans", 26, QFont::Bold));
+    QFontMetrics fm(painter.font());
+
+    // Speed Box
+    int textWidth = fm.width(speedStr) + 20;
+    int textHeight = fm.height() + 5;
+    int boxX = x - textWidth / 2;
+    int boxY = y - sz - textHeight - 10; 
+
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(boxColor);
+    painter.drawRoundedRect(boxX, boxY, textWidth, textHeight, 8, 8);
+    painter.setPen(Qt::white);
+    painter.drawText(QRect(boxX, boxY, textWidth, textHeight), Qt::AlignCenter, speedStr);
+
+    // Distance Box (Above Speed)
+    textWidth = fm.width(distStr) + 20;
+    boxX = x - textWidth / 2;
+    boxY = boxY - textHeight - 5;
+
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(QColor(0, 0, 0, 150));
+    painter.drawRoundedRect(boxX, boxY, textWidth, textHeight, 8, 8);
+    painter.setPen(Qt::white);
+    painter.drawText(QRect(boxX, boxY, textWidth, textHeight), Qt::AlignCenter, distStr);
+  }
 }
 
 void NvgWindow::paintGL() {
