@@ -113,7 +113,7 @@ DevicePanel::DevicePanel(SettingsWindow *parent) : ListWidget(parent) {
   // offroad-only buttons
 
   auto dcamBtn = new ButtonControl("운전자 카메라", "미리보기",
-                                   "운전자 모니터링 최적화를 위해 카메라 각도를 확인합니다. (차량 정지 상태에서만 가능)");
+                                   "차량 내부 카메라의 각도를 확인합니다.");
   connect(dcamBtn, &ButtonControl::clicked, [=]() { emit showDriverView(); });
   addItem(dcamBtn);
 
@@ -206,7 +206,7 @@ void DevicePanel::reboot() {
       }
     }
   } else {
-    ConfirmationDialog::alert("재부팅하려면 조향을 해제하세요", this);
+    ConfirmationDialog::alert("주행 중에는 재부팅할 수 없습니다", this);
   }
 }
 
@@ -219,7 +219,7 @@ void DevicePanel::poweroff() {
       }
     }
   } else {
-    ConfirmationDialog::alert("전원을 끄려면 조향을 해제하세요", this);
+    ConfirmationDialog::alert("주행 중에는 전원을 끌 수 없습니다", this);
   }
 }
 
@@ -492,14 +492,14 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   QList<ParamControl*> toggles;
 
   toggles.append(new ParamControl("QuietDrive",
-                                  "조용한 주행 (경고음 끄기) 🤫",
-                                  "오픈파일럿이 가장 중요한 경고음만 울리고 나머지는 화면 알림으로 대체합니다. 주행 중에 변경할 수 있습니다.",
+                                  "조용한 주행",
+                                  "경고음을 최소화하고 화면 알림을 우선합니다.",
                                   "../assets/offroad/icon_mute.png",
                                   this));
 
   toggles.append(new ParamControl("PrebuiltOn",
-                                  "빠른 부팅 (데이터 파일 미리 생성)",
-                                  "Prebuilt 파일을 생성하여 오픈파일럿 부팅 속도를 높입니다. UI를 변경한 경우 이 기능을 끄십시오!",
+                                  "빠른 부팅",
+                                  "부팅 속도를 높입니다. UI 변경 시에는 꺼주세요.",
                                   "../assets/offroad/icon_shell.png",
                                   this));
 
@@ -522,14 +522,14 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
                                  this));
 
   toggles.append(new ParamControl("ACCMADSCombo",
-                                  "크루즈 버튼으로 상시 조향(MADS) 함께 켜기",
-                                  "RES+ 또는 SET- 버튼을 한 번 누르면 ACC와 MADS를 동시에 켭니다.\n참고: 이 모드로 MADS가 켜지면 메인 버튼이나 시동 끄기로만 끌 수 있습니다.",
+                                  "크루즈 버튼으로 상시 조향 켜기",
+                                  "핸들의 크루즈 버튼(SET/RES)으로 상시 조향(MADS)을 활성화합니다.",
                                   "../assets/offroad/icon_openpilot.png",
                                   this));
 
   toggles.append(new ParamControl("DisableMADS",
-                                  "상시 조향(MADS) 끄기 (순정 모드 사용)",
-                                  "M.A.D.S. 기능을 끄고 순정 오픈파일럿 방식의 인게이지/디스인게이지를 사용합니다.",
+                                  "상시 조향(MADS) 끄기",
+                                  "이 기능을 켜면 순정 오픈파일럿처럼 동작합니다.",
                                   "../assets/offroad/icon_openpilot.png",
                                   this));
 
