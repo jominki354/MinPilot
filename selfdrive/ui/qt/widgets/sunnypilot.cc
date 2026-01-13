@@ -86,8 +86,8 @@ ForceCarRecognition::ForceCarRecognition(QWidget* parent): QWidget(parent) {
 }
 
 // Auto Lane Change Timer (ALCT)
-AutoLaneChangeTimer::AutoLaneChangeTimer() : AbstractControl("Auto Lane Change Timer",
-                                                             "Set a timer to delay the auto lane change operation when the blinker is used. No nudge on the steering wheel is required to auto lane change if a timer is set.\nPlease use caution when using this feature. Only use the blinker when traffic and road conditions permit.",
+AutoLaneChangeTimer::AutoLaneChangeTimer() : AbstractControl("자동 차선 변경 타이머",
+                                                             "방향지시등 사용 시 자동 차선 변경 작동을 지연시킵니다. 타이머가 설정된 경우 핸들을 살짝 돌려주지 않아도 됩니다. (Nudgeless)\n이 기능 사용 시 주의하십시오. 교통 및 도로 상황이 안전할 때만 사용하십시오.",
                                                              "../assets/offroad/icon_road.png") {
 
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -146,23 +146,23 @@ void AutoLaneChangeTimer::refresh() {
   if (option == "0") {
     label.setText(QString::fromStdString("Nudge"));
   } else if (option == "1") {
-    label.setText(QString::fromStdString("Nudgeless"));
+    label.setText(QString::fromStdString("바로 (Nudgeless)"));
   } else if (option == "2") {
-    label.setText(QString::fromStdString("0.5s"));
+    label.setText(QString::fromStdString("0.5초"));
   } else if (option == "3") {
-    label.setText(QString::fromStdString("1s"));
+    label.setText(QString::fromStdString("1초"));
   } else if (option == "4") {
-    label.setText(QString::fromStdString("1.5s"));
+    label.setText(QString::fromStdString("1.5초"));
   } else {
-    label.setText(QString::fromStdString("2s"));
+    label.setText(QString::fromStdString("2초"));
   }
   btnminus.setText("-");
   btnplus.setText("+");
 }
 
 // Brightness Control (Global)
-BrightnessControl::BrightnessControl() : AbstractControl("Brightness Control (Global, %)",
-                                                         "Manually adjusts the global brightness of the screen.",
+BrightnessControl::BrightnessControl() : AbstractControl("화면 밝기 조절 (전체, %)",
+                                                         "전체 화면의 밝기를 수동으로 조절합니다.",
                                                          "../assets/offroad/icon_metric.png") {
 
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -221,7 +221,7 @@ BrightnessControl::BrightnessControl() : AbstractControl("Brightness Control (Gl
 void BrightnessControl::refresh() {
   QString option = QString::fromStdString(params.get("BrightnessControl"));
   if (option == "0") {
-    label.setText(QString::fromStdString("Auto"));
+    label.setText(QString::fromStdString("자동"));
   } else {
     label.setText(QString::fromStdString(params.get("BrightnessControl")));
   }
@@ -230,8 +230,8 @@ void BrightnessControl::refresh() {
 }
 
 // Onroad Screen Off (Auto Onroad Screen Timer)
-OnroadScreenOff::OnroadScreenOff() : AbstractControl("Driving Screen Off Timer",
-                                                     "Turn off the device screen or reduce brightness to protect the screen after driving starts. It automatically brightens or turns on when a touch or event occurs.",
+OnroadScreenOff::OnroadScreenOff() : AbstractControl("주행 중 화면 끄기",
+                                                     "주행 시작 후 일정 시간이 지나면 화면을 끄거나 어둡게 하여 화면 번인을 방지합니다. 화면을 터치하거나 이벤트가 발생하면 다시 켜집니다.",
                                                      "../assets/offroad/icon_metric.png") {
 
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -291,21 +291,21 @@ void OnroadScreenOff::refresh()
 {
   QString option = QString::fromStdString(params.get("OnroadScreenOff"));
   if (option == "-2") {
-    label.setText(QString::fromStdString("Always On"));
+    label.setText(QString::fromStdString("항상 켜짐"));
   } else if (option == "-1") {
-    label.setText(QString::fromStdString("15s"));
+    label.setText(QString::fromStdString("15초"));
   } else if (option == "0") {
-    label.setText(QString::fromStdString("30s"));
+    label.setText(QString::fromStdString("30초"));
   } else {
-    label.setText(QString::fromStdString(params.get("OnroadScreenOff")) + "min(s)");
+    label.setText(QString::fromStdString(params.get("OnroadScreenOff")) + "분");
   }
   btnminus.setText("-");
   btnplus.setText("+");
 }
 
 // Onroad Screen Off Brightness
-OnroadScreenOffBrightness::OnroadScreenOffBrightness() : AbstractControl("Driving Screen Off Brightness (%)",
-                                                                         "When using the Driving Screen Off feature, the brightness is reduced according to the automatic brightness ratio.",
+OnroadScreenOffBrightness::OnroadScreenOffBrightness() : AbstractControl("화면 끄기 모드 밝기 (%)",
+                                                                         "주행 중 화면 끄기 기능이 작동할 때의 화면 밝기를 설정합니다.",
                                                                          "../assets/offroad/icon_metric.png") {
 
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -364,7 +364,7 @@ OnroadScreenOffBrightness::OnroadScreenOffBrightness() : AbstractControl("Drivin
 void OnroadScreenOffBrightness::refresh() {
   QString option = QString::fromStdString(params.get("OnroadScreenOffBrightness"));
   if (option == "0") {
-    label.setText(QString::fromStdString("Dark"));
+    label.setText(QString::fromStdString("가장 어둡게"));
   } else {
     label.setText(QString::fromStdString(params.get("OnroadScreenOffBrightness")));
   }
@@ -373,8 +373,8 @@ void OnroadScreenOffBrightness::refresh() {
 }
 
 // Max Time Offroad (Shutdown timer)
-MaxTimeOffroad::MaxTimeOffroad() : AbstractControl("Max Time Offroad",
-                                                   "Device is automatically turned off after a set time when the engine is turned off (off-road) after driving (on-road).",
+MaxTimeOffroad::MaxTimeOffroad() : AbstractControl("주차 후 전원 끄기 타이머",
+                                                   "시동을 끈 후(오프로드 상태) 설정된 시간이 지나면 장치 전원을 자동으로 끕니다.",
                                                    "../assets/offroad/icon_metric.png") {
 
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -431,31 +431,31 @@ MaxTimeOffroad::MaxTimeOffroad() : AbstractControl("Max Time Offroad",
 void MaxTimeOffroad::refresh() {
   QString option = QString::fromStdString(params.get("MaxTimeOffroad"));
   if (option == "0") {
-    label.setText(QString::fromStdString("AlwaysOn"));
+    label.setText(QString::fromStdString("항상 켜짐"));
   } else if (option == "1") {
-    label.setText(QString::fromStdString("Immediate"));
+    label.setText(QString::fromStdString("즉시"));
   } else if (option == "2") {
-    label.setText(QString::fromStdString("30s"));
+    label.setText(QString::fromStdString("30초"));
   } else if (option == "3") {
-    label.setText(QString::fromStdString("1m"));
+    label.setText(QString::fromStdString("1분"));
   } else if (option == "4") {
-    label.setText(QString::fromStdString("3m"));
+    label.setText(QString::fromStdString("3분"));
   } else if (option == "5") {
-    label.setText(QString::fromStdString("5m"));
+    label.setText(QString::fromStdString("5분"));
   } else if (option == "6") {
-    label.setText(QString::fromStdString("10m"));
+    label.setText(QString::fromStdString("10분"));
   } else if (option == "7") {
-    label.setText(QString::fromStdString("30m"));
+    label.setText(QString::fromStdString("30분"));
   } else if (option == "8") {
-    label.setText(QString::fromStdString("1h"));
+    label.setText(QString::fromStdString("1시간"));
   } else if (option == "9") {
-    label.setText(QString::fromStdString("3h"));
+    label.setText(QString::fromStdString("3시간"));
   } else if (option == "10") {
-    label.setText(QString::fromStdString("5h"));
+    label.setText(QString::fromStdString("5시간"));
   } else if (option == "11") {
-    label.setText(QString::fromStdString("10h"));
+    label.setText(QString::fromStdString("10시간"));
   } else if (option == "12") {
-    label.setText(QString::fromStdString("30h"));
+    label.setText(QString::fromStdString("30시간"));
   }
   btnminus.setText("-");
   btnplus.setText("+");
