@@ -43,7 +43,7 @@ ForceCarRecognition::ForceCarRecognition(QWidget* parent): QWidget(parent) {
   main_layout->setMargin(20);
   main_layout->setSpacing(20);
 
-  QPushButton* back = new QPushButton("Back");
+  QPushButton* back = new QPushButton("뒤로");
   back->setObjectName("backBtn");
   back->setFixedSize(500, 100);
   connect(back, &QPushButton::clicked, [=]() { emit backPress(); });
@@ -54,7 +54,7 @@ ForceCarRecognition::ForceCarRecognition(QWidget* parent): QWidget(parent) {
   QScroller::grabGesture(list->viewport(), QScroller::LeftMouseButtonGesture);
   list->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
-  list->addItem("[-Not selected-]");
+  list->addItem("[-선택 안 함-]");
 
   QStringList items = get_list("/data/params/d/Cars");
   list->addItems(items);
