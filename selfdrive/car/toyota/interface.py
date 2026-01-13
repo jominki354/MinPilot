@@ -13,7 +13,7 @@ from selfdrive.car.toyota.values import (
     CarControllerParams,
     FEATURES,
 )
-from selfdrive.common.params import Params
+from common.params import Params
 from selfdrive.car import (
     STD_CARGO_KG,
     scale_rot_inertia,
