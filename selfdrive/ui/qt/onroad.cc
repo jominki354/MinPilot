@@ -229,13 +229,13 @@ ButtonsWindow::ButtonsWindow(QWidget *parent) : QWidget(parent) {
     }
     if (QUIState::ui_state.scene.dynamic_lane_profile == 0) {
       Params().put("DynamicLaneProfile", "0", 1);
-      dlpBtn->setText("Lane\nonly");
+      dlpBtn->setText("차선\n전용");
     } else if (QUIState::ui_state.scene.dynamic_lane_profile == 1) {
       Params().put("DynamicLaneProfile", "1", 1);
-      dlpBtn->setText("Lane\nless");
+      dlpBtn->setText("차선\n없음");
     } else if (QUIState::ui_state.scene.dynamic_lane_profile == 2) {
       Params().put("DynamicLaneProfile", "2", 1);
-      dlpBtn->setText("Auto\nLane");
+      dlpBtn->setText("자동\n차선");
     }
   });
   dlpBtn->setFixedWidth(200);
@@ -262,13 +262,13 @@ ButtonsWindow::ButtonsWindow(QWidget *parent) : QWidget(parent) {
 void ButtonsWindow::updateState(const UIState &s) {
   if (QUIState::ui_state.scene.dynamic_lane_profile == 0) {
     dlpBtn->setStyleSheet(QString("font-size: 45px; border-radius: 100px; border-color: %1").arg(dlpBtnColors.at(0)));
-    dlpBtn->setText("Lane\nonly");
+    dlpBtn->setText("차선\n전용");
   } else if (QUIState::ui_state.scene.dynamic_lane_profile == 1) {
     dlpBtn->setStyleSheet(QString("font-size: 45px; border-radius: 100px; border-color: %1").arg(dlpBtnColors.at(1)));
-    dlpBtn->setText("Lane\nless");
+    dlpBtn->setText("차선\n없음");
   } else if (QUIState::ui_state.scene.dynamic_lane_profile == 2) {
     dlpBtn->setStyleSheet(QString("font-size: 45px; border-radius: 100px; border-color: %1").arg(dlpBtnColors.at(2)));
-    dlpBtn->setText("Auto\nLane");
+    dlpBtn->setText("자동\n차선");
   }
 }
 
@@ -470,7 +470,7 @@ void OnroadHud::paintEvent(QPaintEvent *event) {
   p.setPen(Qt::NoPen);
 
   configFont(p, "Open Sans", 48, "Regular");
-  drawText(p, rc.center().x(), 118, "MAX", is_cruise_set ? 200 : 100);
+  drawText(p, rc.center().x(), 118, "최고속도", is_cruise_set ? 200 : 100);
   if (is_cruise_set) {
     configFont(p, "Open Sans", 88, is_cruise_set ? "Bold" : "SemiBold");
     drawText(p, rc.center().x(), 212, maxSpeed, 255);
