@@ -459,6 +459,7 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
 
   ScrollView *scroller = new ScrollView(home_widget, this);
   scroller->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+  scroller->setWidgetResizable(true); // Fix key horizontal scroll issue
   fcr_layout->addWidget(scroller, 1);
 
   main_layout->addWidget(home);
@@ -489,102 +490,129 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
     }
   )");
 
-  QList<ParamControl*> toggles;
+  // --- 1. General / Controls ---
+  toggle_layout->addWidget(new QLabel("  일반 / 주행 제어"));
+  toggle_layout->addWidget(horizontal_line());
 
-  toggles.append(new ParamControl("QuietDrive",
+  toggle_layout->addWidget(new ParamControl("QuietDrive",
                                   "조용한 주행",
                                   "경고음을 최소화하고 화면 알림을 우선합니다.",
                                   "../assets/offroad/icon_mute.png",
                                   this));
+  toggle_layout->addWidget(horizontal_line());
 
-  toggles.append(new ParamControl("PrebuiltOn",
+  toggle_layout->addWidget(new ParamControl("PrebuiltOn",
                                   "빠른 부팅",
                                   "부팅 속도를 높입니다. UI 변경 시에는 꺼주세요.",
                                   "../assets/offroad/icon_shell.png",
                                   this));
+  toggle_layout->addWidget(horizontal_line());
 
-  toggles.append(new ParamControl("DisableOnroadUploads",
+  toggle_layout->addWidget(new ParamControl("DisableOnroadUploads",
                                   "데이터 절약 모드 (주행 중 업로드 차단)",
                                   "주행 중 데이터 업로드를 완전히 비활성화합니다. 핫스팟 데이터 사용량을 줄일 수 있습니다. 지도 기반 기능(속도 제한, 턴 제어)을 사용하려면 끄십시오.",
                                   "../assets/offroad/icon_network.png",
                                   this));
+  toggle_layout->addWidget(horizontal_line());
 
-  toggles.append(new ParamControl("ProcessNotRunningOff",
+  toggle_layout->addWidget(new ParamControl("ProcessNotRunningOff",
                                  "시스템 오류 메시지 무시 (해결책 아님)",
                                  "오픈파일럿 사용을 방해하는 '시스템 오류' 알림을 표시하지 않습니다. 이 오류가 자주 발생할 떄만 켜십시오.",
                                  "../assets/offroad/icon_shell.png",
                                  this));
+  toggle_layout->addWidget(horizontal_line());
 
-  toggles.append(new ParamControl("NoOffroadFix",
+  toggle_layout->addWidget(new ParamControl("NoOffroadFix",
                                  "시동 끄기 강제 (배터리 방전 방지)",
                                  "시동을 끈 후 오픈파일럿이 강제로 오프로드 상태로 전환되고 꺼지도록 합니다. 콤마 파워 없이 실행되는 비공식 기기에서 전원이 안 꺼질 때 사용하세요.",
                                  "../assets/offroad/icon_shell.png",
                                  this));
+  toggle_layout->addWidget(horizontal_line());
 
-  toggles.append(new ParamControl("ACCMADSCombo",
+  toggle_layout->addWidget(new ParamControl("ACCMADSCombo",
                                   "크루즈 버튼으로 상시 조향 켜기",
                                   "핸들의 크루즈 버튼(SET/RES)으로 상시 조향(MADS)을 활성화합니다.",
                                   "../assets/offroad/icon_openpilot.png",
                                   this));
+  toggle_layout->addWidget(horizontal_line());
 
-  toggles.append(new ParamControl("DisableMADS",
+  toggle_layout->addWidget(new ParamControl("DisableMADS",
                                   "상시 조향(MADS) 끄기",
                                   "이 기능을 켜면 순정 오픈파일럿처럼 동작합니다.",
                                   "../assets/offroad/icon_openpilot.png",
                                   this));
+  toggle_layout->addWidget(horizontal_line());
 
-  toggles.append(new ParamControl("HandsOnWheelMonitoring",
+  toggle_layout->addWidget(new ParamControl("HandsOnWheelMonitoring",
                                   "핸들 잡음 모니터링 (경고 켜기)",
                                   "운전자가 핸들을 잡고 있는지 모니터링하고 경고합니다.",
                                   "../assets/offroad/icon_openpilot.png",
                                   this));
+  toggle_layout->addWidget(horizontal_line());
 
-  toggles.append(new ParamControl("TurnVisionControl",
-                                  "커브 감속 (카메라 시야 기반)",
-                                  "비전 경로 예측을 사용하여 커브길 진입 시 적절한 속도로 감속합니다.",
-                                  "../assets/offroad/icon_road.png",
-                                  this));
-
-  toggles.append(new ParamControl("ShowDebugUI",
-                                  "개발자용 디버그 정보 표시",
-                                  "디버깅에 도움이 되는 UI 요소를 화면에 표시합니다.",
-                                  "../assets/offroad/icon_calibration.png",
-                                  this));
-
-  toggles.append(new ParamControl("SpeedLimitControl",
+  toggle_layout->addWidget(new ParamControl("SpeedLimitControl",
                                   "제한 속도 자동 맞춤",
                                   "지도 데이터와 차량 인터페이스의 속도 제한 정보를 사용하여 크루즈 속도를 도로 제한 속도에 맞춥니다.",
                                   "../assets/offroad/icon_speed_limit.png",
                                   this));
+  toggle_layout->addWidget(horizontal_line());
 
-  toggles.append(new ParamControl("SpeedLimitPercOffset",
+  toggle_layout->addWidget(new ParamControl("SpeedLimitPercOffset",
                                   "제한 속도 여유분 설정 (+@)",
                                   "설정 속도를 실제 제한 속도보다 약간 높게 설정하여 자연스러운 흐름을 유도합니다.",
                                   "../assets/offroad/icon_speed_limit.png",
                                   this));
+  toggle_layout->addWidget(horizontal_line());
 
-  toggles.append(new ParamControl("TurnSpeedControl",
+  toggle_layout->addWidget(new ParamControl("TurnSpeedControl",
                                   "커브 감속 (지도 데이터 기반)",
                                   "지도 데이터의 곡률 정보를 사용하여 커브길 진입 속도를 조절합니다.",
                                   "../assets/offroad/icon_openpilot.png",
                                   this));
+  toggle_layout->addWidget(horizontal_line());
 
-  toggles.append(new ParamControl("EnableDebugSnapshot",
+  toggle_layout->addWidget(new ParamControl("TurnVisionControl",
+                                  "커브 감속 (카메라 시야 기반)",
+                                  "비전 경로 예측을 사용하여 커브길 진입 시 적절한 속도로 감속합니다.",
+                                  "../assets/offroad/icon_road.png",
+                                  this));
+  toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new CustomAccIncrementsEnabled());
+  toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new CustomAccIncrementsShort());
+  toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new CustomAccIncrementsLong());
+  toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new AutoLaneChangeTimer());
+  toggle_layout->addWidget(horizontal_line());
+
+  // --- 2. Toyota Settings ---
+  toggle_layout->addWidget(new QLabel("  도요타 설정"));
+  toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new ToyotaEnforceStockLongitudinal());
+  toggle_layout->addWidget(horizontal_line());
+
+  // --- 3. Visuals ---
+  toggle_layout->addWidget(new QLabel("  화면 설정"));
+  toggle_layout->addWidget(horizontal_line());
+  
+  toggle_layout->addWidget(new ParamControl("ShowDebugUI",
+                                  "개발자용 디버그 정보 표시",
+                                  "디버깅에 도움이 되는 UI 요소를 화면에 표시합니다.",
+                                  "../assets/offroad/icon_calibration.png",
+                                  this));
+  toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new ParamControl("EnableDebugSnapshot",
                                   "화면 터치로 로그 저장 (디버그용)",
                                   "화면 중앙을 터치하면 현재 상태의 스냅샷 파일을 저장합니다.",
                                   "../assets/offroad/icon_calibration.png",
                                   this));
-
-  for (ParamControl *toggle : toggles) {
-    if (main_layout->count() != 0) {
-      toggle_layout->addWidget(horizontal_line());
-    }
-    toggle_layout->addWidget(toggle);
-  }
-
   toggle_layout->addWidget(horizontal_line());
-  toggle_layout->addWidget(new AutoLaneChangeTimer());
-  toggle_layout->addWidget(horizontal_line());
+
   toggle_layout->addWidget(new BrightnessControl());
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new OnroadScreenOff());
@@ -592,13 +620,4 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(new OnroadScreenOffBrightness());
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new MaxTimeOffroad());
-
-  toggle_layout->addWidget(horizontal_line());
-  toggle_layout->addWidget(new ToyotaEnforceStockLongitudinal());
-  toggle_layout->addWidget(horizontal_line());
-  toggle_layout->addWidget(new CustomAccIncrementsEnabled());
-  toggle_layout->addWidget(horizontal_line());
-  toggle_layout->addWidget(new CustomAccIncrementsShort());
-  toggle_layout->addWidget(horizontal_line());
-  toggle_layout->addWidget(new CustomAccIncrementsLong());
 }
