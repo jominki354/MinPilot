@@ -571,7 +571,17 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(new MaxTimeOffroad());
   toggle_layout->addWidget(horizontal_line());
 
-  // --- 4. CarrotMan 연동 ---
+  // --- 4. 조향 설정 (Lateral Control) ---
+  toggle_layout->addWidget(header("조향 설정"));
+  toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new DynamicLaneProfile());
+  toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new ParamControl("LateralTorqueCustom", "토크 튜닝 사용", "차량별 조향 토크 값을 직접 설정합니다. 활성화하면 아래 값이 적용됩니다.", "../assets/offroad/icon_openpilot.png", this));
+  toggle_layout->addWidget(horizontal_line());
+
+  // --- 5. CarrotMan 연동 ---
   toggle_layout->addWidget(header("CarrotMan 연동"));
   toggle_layout->addWidget(horizontal_line());
 

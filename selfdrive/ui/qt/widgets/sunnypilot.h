@@ -139,3 +139,19 @@ private:
 
   void refresh();
 };
+
+// DynamicLaneProfile: 0=OFF, 1=Laneless, 2=Laneful, 3=Auto
+class DynamicLaneProfile : public AbstractControl {
+  Q_OBJECT
+
+public:
+  DynamicLaneProfile();
+
+private:
+  QPushButton btnplus;
+  QPushButton btnminus;
+  QLabel label;
+  Params params;
+
+  void refresh();
+};

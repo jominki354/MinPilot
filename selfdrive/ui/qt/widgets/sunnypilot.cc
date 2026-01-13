@@ -610,3 +610,73 @@ void MaxTimeOffroad::refresh() {
   btnminus.setText("-");
   btnplus.setText("+");
 }
+
+// Dynamic Lane Profile
+// 0=OFF (자동), 1=Laneless, 2=Laneful, 3=Auto (속도별)
+DynamicLaneProfile::DynamicLaneProfile() : AbstractControl("차선 추종 모드", "OFF: 기존 자동, Laneless: 모델만, Laneful: 차선만, Auto: 속도별 혼합 (40~60km/h)", "../assets/offroad/icon_road.png") {
+
+  label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  label.setStyleSheet("color: #e0e879");
+  hlayout->addWidget(&label);
+
+  btnminus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnplus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnminus.setFixedSize(150, 100);
+  btnplus.setFixedSize(150, 100);
+  hlayout->addWidget(&btnminus);
+  hlayout->addWidget(&btnplus);
+
+  QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("DynamicLaneProfile"));
+    int value = str.toInt();
+    value = value - 1;
+    if (value < 0) {
+      value = 0;
+    }
+    QString values = QString::number(value);
+    params.put("DynamicLaneProfile", values.toStdString());
+    refresh();
+  });
+
+  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("DynamicLaneProfile"));
+    int value = str.toInt();
+    value = value + 1;
+    if (value > 3) {
+      value = 3;
+    }
+    QString values = QString::number(value);
+    params.put("DynamicLaneProfile", values.toStdString());
+    refresh();
+  });
+  refresh();
+}
+
+void DynamicLaneProfile::refresh() {
+  QString option = QString::fromStdString(params.get("DynamicLaneProfile"));
+  if (option == "0") {
+    label.setText(QString::fromStdString("OFF (자동)"));
+  } else if (option == "1") {
+    label.setText(QString::fromStdString("Laneless"));
+  } else if (option == "2") {
+    label.setText(QString::fromStdString("Laneful"));
+  } else if (option == "3") {
+    label.setText(QString::fromStdString("Auto"));
+  }
+  btnminus.setText("-");
+  btnplus.setText("+");
+}
