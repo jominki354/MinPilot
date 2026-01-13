@@ -64,32 +64,15 @@ def calc_speed(dist, target_kph, safe_sec, decel):
 
 
 def get_ip_address():
-    """로컬 IP 주소 가져오기 (CarrotPilot 방식)"""
+    """로컬 IP 주소 가져오기"""
     try:
-        # 1. Socket 을 이용한 방법 (가장 빠름)
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("10.255.255.255", 1))
+        s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
         s.close()
-        if ip.startswith("127.") or ip == "0.0.0.0":
-            raise Exception("Invalid IP")
         return ip
     except:
-        try:
-            # 2. ifconfig 를 이용한 방법 (NEOS/EON 호환)
-            import subprocess
-
-            result = subprocess.check_output(["ifconfig", "wlan0"], encoding="utf8")
-            for line in result.split("\n"):
-                if "inet " in line:
-                    # 'inet addr:192.168...' 또는 'inet 192.168...' 형태 처리
-                    if "addr:" in line:
-                        return line.split("addr:")[1].split()[0]
-                    else:
-                        return line.split()[1]
-        except:
-            pass
-    return "N/A"
+        return "0.0.0.0"
 
 
 def get_broadcast_address():
@@ -132,9 +115,6 @@ def main():
             if now - last_broadcast > 1.0:
                 last_broadcast = now
                 ip = get_ip_address()
-                params.put("WlanIP", ip)
-                params_mem.put("WlanIP", ip)
-                params_mem.put("IpAddress", ip)
                 broadcast_ip = get_broadcast_address()
 
                 # CarrotMan 앱에 보내는 메시지
