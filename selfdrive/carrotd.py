@@ -115,6 +115,7 @@ def main():
             if now - last_broadcast > 1.0:
                 last_broadcast = now
                 ip = get_ip_address()
+                params.put("WlanIp", ip)
                 broadcast_ip = get_broadcast_address()
 
                 # CarrotMan 앱에 보내는 메시지

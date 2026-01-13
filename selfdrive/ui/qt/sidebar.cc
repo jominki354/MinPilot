@@ -51,7 +51,7 @@ void Sidebar::updateState(const UIState &s) {
   setProperty("netType", network_type[deviceState.getNetworkType()]);
   int strength = (int)deviceState.getNetworkStrength();
   setProperty("netStrength", strength > 0 ? strength + 1 : 0);
-  setProperty("wifiAddr", deviceState.getWifiIpAddress().cStr());
+  setProperty("wifiAddr", QString::fromStdString(params.get("WlanIp")));
 
   ItemStatus connectStatus;
   auto last_ping = deviceState.getLastAthenaPingTime();
