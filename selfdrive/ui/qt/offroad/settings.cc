@@ -569,4 +569,21 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(new OnroadScreenOffBrightness());
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new MaxTimeOffroad());
+  toggle_layout->addWidget(horizontal_line());
+
+  // --- 4. CarrotMan 연동 ---
+  toggle_layout->addWidget(header("CarrotMan 연동"));
+  toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new ParamControl("CarrotSpeedControl", "CarrotMan 과속카메라 감속", "CarrotMan 앱과 연동하여 TMap/카카오맵의 과속카메라 정보로 자동 감속합니다.", "../assets/offroad/icon_speed_limit.png", this));
+  toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new ParamControl("CarrotMobileCamera", "이동식 카메라 감속", "이동식(삼발이) 카메라에서도 감속합니다. 꺼도 고정식 카메라는 감속합니다.", "../assets/offroad/icon_speed_limit.png", this));
+  toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new ParamControl("CarrotSpeedBump", "과속방지턱 감속", "과속방지턱(험프) 앞에서 35km/h로 감속합니다.", "../assets/offroad/icon_speed_limit.png", this));
+  toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new ParamControl("CarrotSectionControl", "구간단속 감속", "구간단속 시작 전 감속 및 구간 내 속도 유지", "../assets/offroad/icon_speed_limit.png", this));
+  toggle_layout->addWidget(horizontal_line());
 }
