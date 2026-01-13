@@ -32,44 +32,44 @@ TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
   std::vector<std::tuple<QString, QString, QString, QString>> toggles{
     {
       "OpenpilotEnabledToggle",
-      "Enable openpilot",
-      "Use the openpilot system for adaptive cruise control and lane keep driver assistance. Your attention is required at all times to use this feature. Changing this setting takes effect when the car is powered off.",
+      "오픈파일럿 사용",
+      "오픈파일럿 시스템을 사용하여 적응형 크루즈 컨트롤 및 차선 유지 보조 기능을 사용합니다. 이 기능을 사용할 때는 항상 주의가 필요합니다. 설정을 변경하면 시동을 껐다 켤 때 적용됩니다.",
       "../assets/offroad/icon_openpilot.png",
     },
     {
       "IsLdwEnabled",
-      "Enable Lane Departure Warnings",
-      "Receive alerts to steer back into the lane when your vehicle drifts over a detected lane line without a turn signal activated while driving over 31mph (50kph).",
+      "차선 이탈 경보",
+      "차량이 깜빡이 없이 차선을 넘으려 할 때 50km/h(31mph) 이상에서 경고를 보냅니다.",
       "../assets/offroad/icon_warning.png",
     },
     {
       "IsRHD",
-      "Enable Right-Hand Drive",
-      "Allow openpilot to obey left-hand traffic conventions and perform driver monitoring on right driver seat.",
+      "우핸들 차량 모드",
+      "오픈파일럿이 좌측 통행 규칙을 따르고 우측 운전석을 모니터링하도록 허용합니다.",
       "../assets/offroad/icon_openpilot_mirrored.png",
     },
     {
       "IsMetric",
-      "Use Metric System",
-      "Display speed in km/h instead of mph.",
+      "미터법 사용 (km/h)",
+      "속도를 mph 대신 km/h로 표시합니다.",
       "../assets/offroad/icon_metric.png",
     },
     {
       "CommunityFeaturesToggle",
-      "Enable Community Features",
-      "Use features, such as community supported hardware, from the open source community that are not maintained or supported by comma.ai and have not been confirmed to meet the standard safety model. Be extra cautious when using these features",
+      "커뮤니티 기능 (실험적 기능)",
+      "comma.ai에서 공식적으로 유지 관리하거나 지원하지 않으며 표준 안전 모델을 충족하는지 확인되지 않은 오픈 소스 커뮤니티의 기능(예: 커뮤니티 지원 하드웨어)을 사용합니다. 이 기능을 사용할 때는 각별히 주의하십시오.",
       "../assets/offroad/icon_shell.png",
     },
     {
       "RecordFront",
-      "Record and Upload Driver Camera",
-      "Upload data from the driver facing camera and help improve the driver monitoring algorithm.",
+      "운전자 영상 녹화 및 공유",
+      "운전자 카메라 데이터를 업로드하여 운전자 모니터링 알고리즘 개선을 돕습니다.",
       "../assets/offroad/icon_monitoring.png",
     },
     {
       "EndToEndToggle",
-      "\U0001f96c Disable use of lanelines (Alpha) \U0001f96c",
-      "In this mode openpilot will ignore lanelines and just drive how it thinks a human would.",
+      "\U0001f96c 차선 무시 주행 (Laneless 모드) \U0001f96c",
+      "이 모드에서는 오픈파일럿이 차선 정보를 무시하고 사람이 운전하는 것처럼 주행하려고 합니다.",
       "../assets/offroad/icon_road.png",
     },
 #ifdef ENABLE_MAPS
@@ -155,12 +155,12 @@ DevicePanel::DevicePanel(SettingsWindow *parent) : ListWidget(parent) {
   QHBoxLayout *power_layout = new QHBoxLayout();
   power_layout->setSpacing(30);
 
-  QPushButton *reboot_btn = new QPushButton("Reboot");
+  QPushButton *reboot_btn = new QPushButton("재부팅");
   reboot_btn->setObjectName("reboot_btn");
   power_layout->addWidget(reboot_btn);
   QObject::connect(reboot_btn, &QPushButton::clicked, this, &DevicePanel::reboot);
 
-  QPushButton *poweroff_btn = new QPushButton("Power Off");
+  QPushButton *poweroff_btn = new QPushButton("전원 끄기");
   poweroff_btn->setObjectName("poweroff_btn");
   power_layout->addWidget(poweroff_btn);
   QObject::connect(poweroff_btn, &QPushButton::clicked, this, &DevicePanel::poweroff);
@@ -493,86 +493,86 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   QList<ParamControl*> toggles;
 
   toggles.append(new ParamControl("QuietDrive",
-                                  "Quiet Drive 🤫",
-                                  "openpilot will display alerts but only play the most important warning sounds. This feature can be toggled while the car is on.",
+                                  "조용한 주행 (경고음 끄기) 🤫",
+                                  "오픈파일럿이 가장 중요한 경고음만 울리고 나머지는 화면 알림으로 대체합니다. 주행 중에 변경할 수 있습니다.",
                                   "../assets/offroad/icon_mute.png",
                                   this));
 
   toggles.append(new ParamControl("PrebuiltOn",
-                                  "Fast Boot (Prebuilt)",
-                                  "openpilot will fast boot by creating a Prebuilt file. Note: Turn off this feature if you have made any UI changes!",
+                                  "빠른 부팅 (데이터 파일 미리 생성)",
+                                  "Prebuilt 파일을 생성하여 오픈파일럿 부팅 속도를 높입니다. UI를 변경한 경우 이 기능을 끄십시오!",
                                   "../assets/offroad/icon_shell.png",
                                   this));
 
   toggles.append(new ParamControl("DisableOnroadUploads",
-                                  "Disable Onroad Uploads",
-                                  "Disable uploads completely when onroad. Necessary to avoid high data usage when connected to Wi-Fi hotspot. Turn on this feature if you are looking to utilize map-based features, such as Speed Limit Control and Map Data Turn Control",
+                                  "데이터 절약 모드 (주행 중 업로드 차단)",
+                                  "주행 중 데이터 업로드를 완전히 비활성화합니다. 핫스팟 데이터 사용량을 줄일 수 있습니다. 지도 기반 기능(속도 제한, 턴 제어)을 사용하려면 끄십시오.",
                                   "../assets/offroad/icon_network.png",
                                   this));
 
   toggles.append(new ParamControl("ProcessNotRunningOff",
-                                 "Bypass \"System Malfunction\" Error",
-                                 "Prevent openpilot from returning the \"System Malfunction\" alert that hinders the ability use openpilot. Turn on this feature if you experience this alert frequently.",
+                                 "시스템 오류 메시지 무시 (해결책 아님)",
+                                 "오픈파일럿 사용을 방해하는 '시스템 오류' 알림을 표시하지 않습니다. 이 오류가 자주 발생할 떄만 켜십시오.",
                                  "../assets/offroad/icon_shell.png",
                                  this));
 
   toggles.append(new ParamControl("NoOffroadFix",
-                                 "Fix openpilot No Offroad",
-                                 "Enforce openpilot to go offroad and turns off after shutting down the car. This feature fixes non-official devices running openpilot without comma power.\nOnly enable this feature if your comma device does not shut down after the car is turned off.",
+                                 "시동 끄기 강제 (배터리 방전 방지)",
+                                 "시동을 끈 후 오픈파일럿이 강제로 오프로드 상태로 전환되고 꺼지도록 합니다. 콤마 파워 없이 실행되는 비공식 기기에서 전원이 안 꺼질 때 사용하세요.",
                                  "../assets/offroad/icon_shell.png",
                                  this));
 
   toggles.append(new ParamControl("ACCMADSCombo",
-                                  "Enable ACC+MADS with RES+/SET-",
-                                  "Engage both ACC and MADS with a single press of RES+ or SET- button.\nNote: Once MADS is engaged via this mode, it will remain engaged until it is manually disabled via LFA/LKAS/Cruise MAIN button or car shut off.",
+                                  "크루즈 버튼으로 상시 조향(MADS) 함께 켜기",
+                                  "RES+ 또는 SET- 버튼을 한 번 누르면 ACC와 MADS를 동시에 켭니다.\n참고: 이 모드로 MADS가 켜지면 메인 버튼이나 시동 끄기로만 끌 수 있습니다.",
                                   "../assets/offroad/icon_openpilot.png",
                                   this));
 
   toggles.append(new ParamControl("DisableMADS",
-                                  "Disable M.A.D.S.",
-                                  "Disable the beloved M.A.D.S. feature. Enable Stock openpilot engagement/disengagement.",
+                                  "상시 조향(MADS) 끄기 (순정 모드 사용)",
+                                  "M.A.D.S. 기능을 끄고 순정 오픈파일럿 방식의 인게이지/디스인게이지를 사용합니다.",
                                   "../assets/offroad/icon_openpilot.png",
                                   this));
 
   toggles.append(new ParamControl("HandsOnWheelMonitoring",
-                                  "Enable Hands on Wheel Monitoring",
-                                  "Monitor and alert when driver is not keeping the hands on the steering wheel.",
+                                  "핸들 잡음 모니터링 (경고 켜기)",
+                                  "운전자가 핸들을 잡고 있는지 모니터링하고 경고합니다.",
                                   "../assets/offroad/icon_openpilot.png",
                                   this));
 
   toggles.append(new ParamControl("TurnVisionControl",
-                                  "Enable vision based turn control",
-                                  "Use vision path predictions to estimate the appropiate speed to drive through turns ahead.",
+                                  "커브 감속 (카메라 시야 기반)",
+                                  "비전 경로 예측을 사용하여 커브길 진입 시 적절한 속도로 감속합니다.",
                                   "../assets/offroad/icon_road.png",
                                   this));
 
   toggles.append(new ParamControl("ShowDebugUI",
-                                  "Show debug UI elements",
-                                  "Show UI elements that aid debugging.",
+                                  "개발자용 디버그 정보 표시",
+                                  "디버깅에 도움이 되는 UI 요소를 화면에 표시합니다.",
                                   "../assets/offroad/icon_calibration.png",
                                   this));
 
   toggles.append(new ParamControl("SpeedLimitControl",
-                                  "Enable Speed Limit Control",
-                                  "Use speed limit signs information from map data and car interface to automatically adapt cruise speed to road limits.",
+                                  "제한 속도 자동 맞춤",
+                                  "지도 데이터와 차량 인터페이스의 속도 제한 정보를 사용하여 크루즈 속도를 도로 제한 속도에 맞춥니다.",
                                   "../assets/offroad/icon_speed_limit.png",
                                   this));
 
   toggles.append(new ParamControl("SpeedLimitPercOffset",
-                                  "Enable Speed Limit Offset",
-                                  "Set speed limit slightly higher than actual speed limit for a more natural drive.",
+                                  "제한 속도 여유분 설정 (+@)",
+                                  "설정 속도를 실제 제한 속도보다 약간 높게 설정하여 자연스러운 흐름을 유도합니다.",
                                   "../assets/offroad/icon_speed_limit.png",
                                   this));
 
   toggles.append(new ParamControl("TurnSpeedControl",
-                                  "Enable Map Data Turn Control",
-                                  "Use curvature info from map data to define speed limits to take turns ahead",
+                                  "커브 감속 (지도 데이터 기반)",
+                                  "지도 데이터의 곡률 정보를 사용하여 커브길 진입 속도를 조절합니다.",
                                   "../assets/offroad/icon_openpilot.png",
                                   this));
 
   toggles.append(new ParamControl("EnableDebugSnapshot",
-                                  "Debug snapshot on screen center tap",
-                                  "Stores snapshot file with current state of some modules.",
+                                  "화면 터치로 로그 저장 (디버그용)",
+                                  "화면 중앙을 터치하면 현재 상태의 스냅샷 파일을 저장합니다.",
                                   "../assets/offroad/icon_calibration.png",
                                   this));
 
