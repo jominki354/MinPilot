@@ -82,3 +82,9 @@ models/*.thneed
 build/
 
 !**/.gitkeep
+
+# Agent artifacts
+docs/_meta/
+docs/CRASH_REPORT_*.md
+analyze_logs.py
+extracted_logs.txt
