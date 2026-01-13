@@ -13,7 +13,8 @@ from selfdrive.car.toyota.values import (
     CarControllerParams,
     FEATURES,
 )
-from common.params import Params
+
+from selfdrive.car.sunnypilot_params import SafeParams
 from selfdrive.car import (
     STD_CARGO_KG,
     scale_rot_inertia,
@@ -312,12 +313,10 @@ class CarInterface(CarInterfaceBase):
             smartDsu or ret.enableDsu or candidate in TSS2_CAR
         )
 
-        try:
-            enforce_stock_long = Params().get_bool("ToyotaEnforceStockLongitudinal")
-        except Exception:
-            enforce_stock_long = False
-
-        if enforce_stock_long and ret.openpilotLongitudinalControl:
+        if (
+            SafeParams().get_bool("ToyotaEnforceStockLongitudinal")
+            and ret.openpilotLongitudinalControl
+        ):
             ret.openpilotLongitudinalControl = False
             ret.enableDsu = False
 
