@@ -2,8 +2,12 @@ import os
 
 from selfdrive.manager.process import PythonProcess, NativeProcess, DaemonProcess
 from selfdrive.hardware import EON, TICI, PC
+from selfdrive.car.sunnypilot_params import SafeParams
 
 WEBCAM = os.getenv("USE_WEBCAM") is not None
+
+# Check if logging is disabled via settings
+DISABLE_LOGGING = SafeParams().get_bool("DisableLogging", default=False)
 
 procs = [
     DaemonProcess("manage_athenad", "selfdrive.athena.manage_athenad", "AthenadPid"),
@@ -20,7 +24,9 @@ procs = [
         driverview=True,
     ),
     NativeProcess("logcatd", "selfdrive/logcatd", ["./logcatd"]),
-    NativeProcess("loggerd", "selfdrive/loggerd", ["./loggerd"]),
+    NativeProcess(
+        "loggerd", "selfdrive/loggerd", ["./loggerd"], enabled=(not DISABLE_LOGGING)
+    ),
     NativeProcess("modeld", "selfdrive/modeld", ["./modeld"]),
     NativeProcess(
         "navd", "selfdrive/ui/navd", ["./navd"], enabled=(PC or TICI), persistent=True
@@ -67,7 +73,12 @@ procs = [
         "tombstoned", "selfdrive.tombstoned", enabled=not PC, persistent=True
     ),
     PythonProcess("updated", "selfdrive.updated", enabled=not PC, persistent=True),
-    PythonProcess("uploader", "selfdrive.loggerd.uploader", persistent=True),
+    PythonProcess(
+        "uploader",
+        "selfdrive.loggerd.uploader",
+        persistent=True,
+        enabled=(not DISABLE_LOGGING),
+    ),
     PythonProcess("mapd", "selfdrive.mapd.mapd"),
     PythonProcess("systemd", "selfdrive.systemd", persistent=True),
     PythonProcess("gpxd", "selfdrive.gpxd.gpxd"),

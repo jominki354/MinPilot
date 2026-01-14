@@ -513,6 +513,8 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new ParamControl("PrebuiltOn", "빠른 부팅", "부팅 속도를 높입니다. UI 변경 시에는 꺼주세요.", "../assets/offroad/icon_shell.png", this));
   toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new ParamControl("DisableLogging", "로깅 비활성화", "화면 녹화 및 로그 저장을 끕니다. 저장 공간과 성능을 절약합니다. 재부팅 후 적용됩니다.", "../assets/offroad/icon_memory.png", this));
+  toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new ParamControl("DisableOnroadUploads", "데이터 절약 모드 (주행 중 업로드 차단)", "주행 중 데이터 업로드를 완전히 비활성화합니다. 핫스팟 데이터 사용량을 줄일 수 있습니다. 지도 기반 기능(속도 제한, 턴 제어)을 사용하려면 끄십시오.", "../assets/offroad/icon_network.png", this));
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new ParamControl("ProcessNotRunningOff", "시스템 오류 메시지 무시", "오픈파일럿 사용을 방해하는 '시스템 오류' 알림을 표시하지 않습니다. 이 오류가 자주 발생할 떄만 켜십시오.", "../assets/offroad/icon_shell.png", this));
