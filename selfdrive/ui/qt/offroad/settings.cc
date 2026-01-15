@@ -593,6 +593,8 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new ParamControl("ShowRadarInfo", "Radar 정보 표시 (앞차 박스)", "선행 차량의 레이더 정보(거리, 속도)를 박스로 표시합니다 (APilot 스타일).", "../assets/offroad/icon_road.png", this));
   toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new ParamControl("UIDevMode", "UI 개발 모드", "판다/차량 연결 없이 온로드 UI를 테스트합니다. camerad만 실행하면 됩니다.", "../assets/offroad/icon_calibration.png", this));
+  toggle_layout->addWidget(horizontal_line());
 
   // --- 7. 도요타 설정 (Toyota) ---
   toggle_layout->addWidget(header("도요타 설정"));

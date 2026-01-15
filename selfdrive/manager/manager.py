@@ -80,6 +80,7 @@ def manager_init():
         ("PathOffset", "0"),
         ("PathOffsetEnable", "0"),
         ("RoadEdgeDetection", "0"),
+        ("UIDevMode", "0"),
     ]
     if not PC:
         default_params.append(

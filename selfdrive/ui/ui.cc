@@ -184,6 +184,13 @@ static void update_state(UIState *s) {
     scene.light_sensor = std::clamp<float>(1.0 - (ev / max_ev), 0.0, 1.0);
   }
   scene.started = sm["deviceState"].getDeviceState().getStarted() && scene.ignition;
+  
+  // UI DevMode: 판다 없이도 온로드 UI 강제 활성화
+  static bool ui_dev_mode = Params().getBool("UIDevMode");
+  if (ui_dev_mode) {
+    scene.started = true;
+    scene.world_objects_visible = true;
+  }
   if (sm.updated("lateralPlan")) {
     auto data = sm["lateralPlan"].getLateralPlan();
 
