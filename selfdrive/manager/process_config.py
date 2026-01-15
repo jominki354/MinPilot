@@ -9,6 +9,9 @@ WEBCAM = os.getenv("USE_WEBCAM") is not None
 # Check if logging is disabled via settings
 DISABLE_LOGGING = SafeParams().get_bool("DisableLogging", default=False)
 
+# Check if UI Dev Mode is enabled
+UI_DEV_MODE = SafeParams().get_bool("UIDevMode", default=False)
+
 procs = [
     DaemonProcess("manage_athenad", "selfdrive.athena.manage_athenad", "AthenadPid"),
     # due to qualcomm kernel bugs SIGKILLing camerad sometimes causes page table corruption
@@ -95,6 +98,13 @@ procs = [
     PythonProcess("rtshield", "selfdrive.rtshield", enabled=EON),
     PythonProcess(
         "androidd", "selfdrive.hardware.eon.androidd", enabled=EON, persistent=True
+    ),
+    # UI Dev Mode - 더미 메시지 퍼블리셔 (UIDevMode 토글 시 자동 시작/종료)
+    PythonProcess(
+        "ui_dev_publisher",
+        "selfdrive.debug.ui_dev_publisher",
+        enabled=UI_DEV_MODE,
+        persistent=True,
     ),
 ]
 
