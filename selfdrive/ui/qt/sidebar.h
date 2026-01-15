@@ -52,4 +52,9 @@ protected:
   ItemStatus connect_status, panda_status, temp_status;
   QString net_type;
   int net_strength = 0;
+  
+  // IP 주소 표시
+  QString ip_address = "--";
+  qint64 last_ip_update = 0;
+  QString getIPAddress();
 };

@@ -3,6 +3,8 @@
 #include <QMouseEvent>
 
 #include "selfdrive/ui/qt/util.h"
+#include <QDateTime>
+#include <QNetworkInterface>
 
 void Sidebar::drawMetric(QPainter &p, const QString &label, QColor c, int y) {
   const QRect rect = {30, y, 240, label.contains("\n") ? 124 : 100};
@@ -77,6 +79,14 @@ void Sidebar::updateState(const UIState &s) {
     pandaStatus = {"GPS\n검색중", warning_color};
   }
   setProperty("pandaStatus", QVariant::fromValue(pandaStatus));
+
+  // IP 주소 갱신 (3초마다 또는 네트워크 타입 변경 시)
+  qint64 now = QDateTime::currentMSecsSinceEpoch();
+  QString new_net_type = network_type[deviceState.getNetworkType()];
+  if (now - last_ip_update > 3000 || new_net_type != net_type) {
+    last_ip_update = now;
+    ip_address = getIPAddress();
+  }
 }
 
 void Sidebar::paintEvent(QPaintEvent *event) {
@@ -106,8 +116,23 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   const QRect r = QRect(50, 247, 100, 50);
   p.drawText(r, Qt::AlignCenter, net_type);
 
+  // IP 주소 표시
+  configFont(p, "Open Sans", 26, "Regular");
+  p.setPen(QColor(0x88, 0x88, 0x88));
+  const QRect ip_rect = QRect(30, 290, 240, 35);
+  p.drawText(ip_rect, Qt::AlignCenter, ip_address);
+
   // metrics
   drawMetric(p, temp_status.first, temp_status.second, 338);
   drawMetric(p, panda_status.first, panda_status.second, 496);
   drawMetric(p, connect_status.first, connect_status.second, 654);
+}
+
+QString Sidebar::getIPAddress() {
+  for (const QHostAddress &address : QNetworkInterface::allAddresses()) {
+    if (address.protocol() == QAbstractSocket::IPv4Protocol && !address.isLoopback()) {
+      return address.toString();
+    }
+  }
+  return "--";
 }
