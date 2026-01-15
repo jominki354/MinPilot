@@ -89,3 +89,5 @@ docs/CRASH_REPORT_*.md
 analyze_logs.py
 extracted_logs.txt
 rlog/
+e:\c2\_resources
+tools/carrot/*.apk

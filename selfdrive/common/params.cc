@@ -99,6 +99,8 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"CarrotSpdLimit", CLEAR_ON_MANAGER_START},
     {"CarrotRoadLimit", CLEAR_ON_MANAGER_START},
     {"CarrotActive", CLEAR_ON_MANAGER_START},
+    {"CarrotRoadName", CLEAR_ON_MANAGER_START},
+    {"CarrotNextRoadName", CLEAR_ON_MANAGER_START},
     {"CarParams", CLEAR_ON_MANAGER_START | CLEAR_ON_PANDA_DISCONNECT | CLEAR_ON_IGNITION_ON},
     {"CarParamsCache", CLEAR_ON_MANAGER_START | CLEAR_ON_PANDA_DISCONNECT},
     {"CarVin", CLEAR_ON_MANAGER_START | CLEAR_ON_PANDA_DISCONNECT | CLEAR_ON_IGNITION_ON},

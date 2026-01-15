@@ -206,6 +206,20 @@ def main():
                 params_mem.put("CarrotRoadLimit", str(road_limit))
                 params_mem.put("CarrotActive", "1")
 
+                # 도로명 저장 (UI 표시용)
+                road_name = d.get("szPosRoadName", "")
+                next_road_name = d.get("szNextRoadName", "")
+                if road_name:
+                    params_mem.put("CarrotRoadName", road_name)
+                if next_road_name:
+                    params_mem.put("CarrotNextRoadName", next_road_name)
+
+                # 디버그: 수신된 모든 키 출력 (5초마다)
+                if time.monotonic() - last_recv > 5.0:
+                    print(f"[carrotd] Keys: {sorted(d.keys())}")
+                    if road_name:
+                        print(f"[carrotd] Road: {road_name}")
+
             except socket.timeout:
                 if time.monotonic() - last_recv > 10:
                     params_mem.put("CarrotSpdLimit", "0")

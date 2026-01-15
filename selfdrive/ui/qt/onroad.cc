@@ -391,8 +391,14 @@ void OnroadHud::updateState(const UIState &s) {
     setProperty("showDebugUI", s.scene.show_debug_ui);
 
     const auto lmd = sm["liveMapData"].getLiveMapData();
+    QString road_name = QString::fromStdString(lmd.getCurrentRoadName());
+    
+    std::string carrot_road_name = Params().get("CarrotRoadName");
+    if (!carrot_road_name.empty()) {
+      road_name = QString::fromStdString(carrot_road_name);
+    }
 
-    setProperty("roadName", QString::fromStdString(lmd.getCurrentRoadName()));
+    setProperty("roadName", road_name);
 
     const float speed_limit = lp.getSpeedLimit() * (s.scene.is_metric ? MS_TO_KPH : MS_TO_MPH);
     const float speed_limit_offset = lp.getSpeedLimitOffset() * (s.scene.is_metric ? MS_TO_KPH : MS_TO_MPH);
