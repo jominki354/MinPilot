@@ -283,6 +283,17 @@ void OnroadAlerts::updateAlert(const Alert &a, const QColor &color) {
 }
 
 void OnroadAlerts::paintEvent(QPaintEvent *event) {
+  // UI DevMode: 모든 경고 알림 숨김
+  static int dev_mode_check = 0;
+  static bool ui_dev_mode = false;
+  if (++dev_mode_check >= 20) {
+    dev_mode_check = 0;
+    ui_dev_mode = Params().getBool("UIDevMode");
+  }
+  if (ui_dev_mode) {
+    return;  // 개발 모드에서는 알림창 표시 안함
+  }
+  
   if (alert.size == cereal::ControlsState::AlertSize::NONE) {
     return;
   }
@@ -469,6 +480,31 @@ void OnroadHud::paintEvent(QPaintEvent *event) {
   bg.setColorAt(0, QColor::fromRgbF(0, 0, 0, 0.45));
   bg.setColorAt(1, QColor::fromRgbF(0, 0, 0, 0));
   p.fillRect(0, 0, width(), header_h, bg);
+
+  // UI DevMode: 우측 상단에 DEBUG MODE 배지 표시
+  static int dev_badge_check = 0;
+  static bool show_dev_badge = false;
+  if (++dev_badge_check >= 20) {  // 약 1초마다 체크
+    dev_badge_check = 0;
+    show_dev_badge = Params().getBool("UIDevMode");
+  }
+  if (show_dev_badge) {
+    configFont(p, "Inter", 28, "Bold");
+    QString badgeText = "DEBUG MODE";
+    QFontMetrics fm(p.font());
+    int textWidth = fm.horizontalAdvance(badgeText);
+    int badgeX = rect().right() - textWidth - 30;
+    int badgeY = 30;
+    
+    // 빨간 배경 박스
+    p.setPen(Qt::NoPen);
+    p.setBrush(QColor(220, 53, 69, 200));  // 빨간색 반투명
+    p.drawRoundedRect(badgeX - 15, badgeY - 5, textWidth + 30, fm.height() + 10, 8, 8);
+    
+    // 흰색 텍스트
+    p.setPen(Qt::white);
+    p.drawText(badgeX, badgeY + fm.ascent(), badgeText);
+  }
 
   // MinPilot: Central speed pair (current speed | cruise speed)
   drawSpeedPair(p);
