@@ -186,7 +186,13 @@ static void update_state(UIState *s) {
   scene.started = sm["deviceState"].getDeviceState().getStarted() && scene.ignition;
   
   // UI DevMode: 판다 없이도 온로드 UI 강제 활성화
-  static bool ui_dev_mode = Params().getBool("UIDevMode");
+  // 매 프레임마다 파라미터를 읽어서 실시간 토글 반영
+  static int dev_mode_check_counter = 0;
+  static bool ui_dev_mode = false;
+  if (++dev_mode_check_counter >= 20) {  // 약 1초마다 체크 (20Hz)
+    dev_mode_check_counter = 0;
+    ui_dev_mode = Params().getBool("UIDevMode");
+  }
   if (ui_dev_mode) {
     scene.started = true;
     scene.world_objects_visible = true;
