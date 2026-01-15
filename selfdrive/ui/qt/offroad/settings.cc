@@ -606,7 +606,7 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
     }
   });
   // 주행 중(온로드)에는 토글 비활성화
-  QObject::connect(parent, &SettingsWindow::offroadTransition, [=](bool offroad) {
+  QObject::connect(parent, &SettingsWindow::offroadTransition, this, [=](bool offroad) {
     uiDevModeToggle->setEnabled(offroad);
   });
   toggle_layout->addWidget(uiDevModeToggle);
