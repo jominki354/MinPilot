@@ -85,6 +85,7 @@ Q_PROPERTY(QString roadName MEMBER roadName NOTIFY valueChanged);
 
   Q_PROPERTY(bool standStill MEMBER standStill NOTIFY valueChanged);
   Q_PROPERTY(int standstillElapsedTime MEMBER standstillElapsedTime NOTIFY valueChanged);
+  Q_PROPERTY(int deviceTemp MEMBER deviceTemp NOTIFY valueChanged);
 
 public:
   explicit OnroadHud(QWidget *parent);
@@ -148,6 +149,7 @@ private:
   QString vtcSpeed;
   QColor vtcColor;
   bool showDebugUI = false;
+  int deviceTemp = 0;
 
   QString roadName;
 

@@ -14,7 +14,7 @@ QString getVersion() {
 }
 
 QString getBrand() {
-  return Params().getBool("Passive") ? "dashcam" : "sunnypilot";
+  return Params().getBool("Passive") ? "dashcam" : "MinPilot";
 }
 
 QString getBrandVersion() {

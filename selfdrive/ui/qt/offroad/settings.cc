@@ -359,7 +359,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     {"네트워크", network_panel(this)},
     {"토글", new TogglesPanel(this)},
     {"소프트웨어", new SoftwarePanel(this)},
-    {"써니파일럿", new SunnypilotPanel(this)},
+    {"MinPilot", new SunnypilotPanel(this)},
   };
 
 #ifdef ENABLE_MAPS

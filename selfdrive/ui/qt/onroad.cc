@@ -457,6 +457,7 @@ void OnroadHud::updateState(const UIState &s) {
 
   setProperty("standStill", carState.getStandStill());
   setProperty("standstillElapsedTime", sm["lateralPlan"].getLateralPlan().getStandstillElapsed());
+  setProperty("deviceTemp", sm["deviceState"].getDeviceState().getAmbientTempC());
 }
 
 void OnroadHud::paintEvent(QPaintEvent *event) {
@@ -478,7 +479,7 @@ void OnroadHud::paintEvent(QPaintEvent *event) {
   // MinPilot: CarrotPilot speed camera info
   drawCarrotCameraInfo(p);
 
-  QRect rc(bdr_s * 2, bdr_s * 1.5, 184, 202);
+  // QRect rc(bdr_s * 2, bdr_s * 1.5, 184, 202); // Removed unused variable
 
   if (engageable) {
     if (showDebugUI && showVTC) {
@@ -1312,7 +1313,13 @@ void OnroadHud::drawTopLeftInfo(QPainter &p) {
   p.drawLine(x + timeWidth + 20, y + 10, x + timeWidth + 20, y + 45);
   
   // Temperature from device state
-  int deviceTemp = QUIState::ui_state.scene.deviceState.getAmbientTempC();
+  // int deviceTemp = QUIState::ui_state.scene.deviceState.getAmbientTempC(); // Error: no member named 'deviceState'
+  // Use property instead
+  // int deviceTemp = this->property("deviceTemp").toInt();
+  // But since we are inside OnroadHud, we can just access the member variable if it strictly follows Q_PROPERTY
+  // checking onroad.h... yes Q_PROPERTY(int deviceTemp MEMBER deviceTemp ...);
+  // So we can use deviceTemp directly!
+  
   QString tempStr = QString::number(deviceTemp) + "°C";
   configFont(p, "Inter", 32, "Bold");
   
