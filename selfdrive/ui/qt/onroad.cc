@@ -1231,10 +1231,12 @@ void NvgWindow::showEvent(QShowEvent *event) {
 
 void OnroadHud::drawSpeedPair(QPainter &p) {
   // Central speed pair: [current speed] | [cruise speed]
+  // 크기 2배 확대
   int centerX = rect().center().x();
-  int y = 30;  // Same as simulator
-  int fontSize = 90;
-  int gap = 25;  // Gap between speeds and divider
+  int y = 60;  // 상단 여백 확대 (30->60)
+  int fontSize = 180;  // 폰트 크기 2배 (90->180)
+  int labelFontSize = 40;  // 레이블 폰트 크기 2배 (20->40)
+  int gap = 50;  // 간격 2배 (25->50)
 
   // Current speed (left side)
   configFont(p, "Inter", fontSize, "Bold");
@@ -1242,21 +1244,21 @@ void OnroadHud::drawSpeedPair(QPainter &p) {
   QFontMetrics fm1(p.font());
   int speedWidth = fm1.horizontalAdvance(speed);
   int speedHeight = fm1.height();
-  int speedY = y + speedHeight;  // Removed +25 padding
+  int speedY = y + speedHeight;
   p.drawText(centerX - speedWidth - gap, speedY, speed);
 
   // "현재속도" label just above current speed number
-  configFont(p, "Open Sans", 20, "Bold");  // Reduced from 22 to 20
+  configFont(p, "Open Sans", labelFontSize, "Bold");
   p.setPen(MP_GREY);
   QFontMetrics fmLabel(p.font());
   int labelWidth = fmLabel.horizontalAdvance("현재속도");
   int labelHeight = fmLabel.height();
-  int labelY = speedY - speedHeight + labelHeight - 5;  // Closer to number
+  int labelY = speedY - speedHeight + labelHeight - 10;  // 여백 조정
   p.drawText(centerX - speedWidth/2 - gap - labelWidth/2, labelY, "현재속도");
 
-  // Divider line
-  p.setPen(QPen(MP_GREY, 4));
-  p.drawLine(centerX, labelY - labelHeight + 5, centerX, speedY);
+  // Divider line (두께 2배)
+  p.setPen(QPen(MP_GREY, 6));
+  p.drawLine(centerX, labelY - labelHeight + 10, centerX, speedY);
 
   // Cruise speed (right side)
   configFont(p, "Inter", fontSize, "Bold");
@@ -1266,25 +1268,27 @@ void OnroadHud::drawSpeedPair(QPainter &p) {
   p.drawText(centerX + gap, speedY, maxSpeed);
 
   // "크루즈" label just above cruise speed number
-  configFont(p, "Open Sans", 20, "Bold");
+  configFont(p, "Open Sans", labelFontSize, "Bold");
   p.setPen(MP_GREY);
   int cruiseLabelWidth = fmLabel.horizontalAdvance("크루즈");
   p.drawText(centerX + gap + cruiseWidth/2 - cruiseLabelWidth/2, labelY, "크루즈");
 
   // Speed unit label (centered below everything)
-  configFont(p, "Open Sans", 20, "Regular");
+  configFont(p, "Open Sans", labelFontSize, "Regular");
   p.setPen(MP_GREY);
   QFontMetrics fmUnit(p.font());
   int unitWidth = fmUnit.horizontalAdvance(speedUnit);
-  p.drawText(centerX - unitWidth / 2, speedY + 25, speedUnit);
+  p.drawText(centerX - unitWidth / 2, speedY + 50, speedUnit);  // 여백 2배 (25->50)
 }
 
 void OnroadHud::drawStatusIndicators(QPainter &p) {
   // ACC/LKAS status indicators at bottom right
-  int x = rect().right() - 220;
-  int y = rect().bottom() - 160;
-  int dotSize = 20;
-  int spacing = 50;
+  // 크기 2배 확대
+  int x = rect().right() - 380;  // 위치 조정 (220->380)
+  int y = rect().bottom() - 280;  // 위치 조정 (160->280)
+  int dotSize = 40;  // 점 크기 2배 (20->40)
+  int spacing = 100;  // 간격 2배 (50->100)
+  int fontSize = 64;  // 폰트 크기 2배 (32->64)
 
   auto drawIndicator = [&](int dy, const QString& label, bool active) {
     // Status dot
@@ -1293,9 +1297,9 @@ void OnroadHud::drawStatusIndicators(QPainter &p) {
     p.drawEllipse(x, y + dy, dotSize, dotSize);
 
     // Label
-    configFont(p, "Open Sans", 32, "Bold");
+    configFont(p, "Open Sans", fontSize, "Bold");
     p.setPen(Qt::white);
-    p.drawText(x + dotSize + 12, y + dy + 16, label);
+    p.drawText(x + dotSize + 24, y + dy + dotSize - 8, label);  // 여백 조정
   };
 
   // ACC: Active when engaged and cruise is set
@@ -1330,34 +1334,30 @@ void OnroadHud::drawRoadNameBar(QPainter &p) {
 
 void OnroadHud::drawTopLeftInfo(QPainter &p) {
   // Top left: Clock | Temperature
-  int x = 60;
-  int y = 50;
+  // 크기 2배 확대
+  int x = 80;  // 여백 확대 (60->80)
+  int y = 80;  // 여백 확대 (50->80)
+  int clockFontSize = 72;  // 폰트 크기 2배 (36->72)
+  int tempFontSize = 64;  // 폰트 크기 2배 (32->64)
   
   // Get current time
   QTime currentTime = QTime::currentTime();
   QString timeStr = currentTime.toString("HH:mm");
   
   // Clock
-  configFont(p, "Inter", 36, "Bold");
+  configFont(p, "Inter", clockFontSize, "Bold");
   p.setPen(Qt::white);
   QFontMetrics fmTime(p.font());
-  p.drawText(x, y + 40, timeStr);
+  p.drawText(x, y + fmTime.ascent(), timeStr);
   
-  // Divider
+  // Divider (두께 2배)
   int timeWidth = fmTime.horizontalAdvance(timeStr);
-  p.setPen(QPen(MP_GREY, 2));
-  p.drawLine(x + timeWidth + 20, y + 10, x + timeWidth + 20, y + 45);
+  p.setPen(QPen(MP_GREY, 4));
+  p.drawLine(x + timeWidth + 30, y + 10, x + timeWidth + 30, y + fmTime.height() - 10);
   
-  // Temperature from device state
-  // int deviceTemp = QUIState::ui_state.scene.deviceState.getAmbientTempC(); // Error: no member named 'deviceState'
-  // Use property instead
-  // int deviceTemp = this->property("deviceTemp").toInt();
-  // But since we are inside OnroadHud, we can just access the member variable if it strictly follows Q_PROPERTY
-  // checking onroad.h... yes Q_PROPERTY(int deviceTemp MEMBER deviceTemp ...);
-  // So we can use deviceTemp directly!
-  
+  // Temperature
   QString tempStr = QString::number(deviceTemp) + "°C";
-  configFont(p, "Inter", 32, "Bold");
+  configFont(p, "Inter", tempFontSize, "Bold");
   
   // Color based on temperature
   QColor tempColor = Qt::white;
@@ -1367,7 +1367,8 @@ void OnroadHud::drawTopLeftInfo(QPainter &p) {
     tempColor = QColor(255, 188, 0);  // Orange
   }
   p.setPen(tempColor);
-  p.drawText(x + timeWidth + 40, y + 38, tempStr);
+  QFontMetrics fmTemp(p.font());
+  p.drawText(x + timeWidth + 50, y + fmTemp.ascent(), tempStr);
 }
 
 void OnroadHud::drawCarrotCameraInfo(QPainter &p) {
