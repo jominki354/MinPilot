@@ -123,15 +123,14 @@ DevicePanel::DevicePanel(SettingsWindow *parent) : ListWidget(parent) {
   });
   addItem(resetCalibBtn);
 
-  if (!params.getBool("Passive")) {
-    auto retrainingBtn = new ButtonControl("트레이닝 가이드 다시보기", "보기", "오픈파일럿의 규칙, 기능 및 제한 사항을 다시 확인합니다.");
-    connect(retrainingBtn, &ButtonControl::clicked, [=]() {
-      if (ConfirmationDialog::confirm("트레이닝 가이드를 다시 보시겠습니까?", this)) {
-        emit reviewTrainingGuide();
-      }
-    });
-    addItem(retrainingBtn);
-  }
+  // 설정 초기화 버튼 (manager.py의 default_params 기반)
+  auto resetParamsBtn = new ButtonControl("설정 초기화", "초기화", "모든 커스텀 설정을 기본값으로 되돌립니다. 재부팅됩니다.");
+  connect(resetParamsBtn, &ButtonControl::clicked, [=]() {
+    if (ConfirmationDialog::confirm("모든 설정을 기본값으로 초기화하시겠습니까?\n(재부팅됩니다)", this)) {
+      std::system("/usr/bin/python3 /data/openpilot/selfdrive/manager/reset_params.py &");
+    }
+  });
+  addItem(resetParamsBtn);
 
   if (Hardware::TICI()) {
     auto regulatoryBtn = new ButtonControl("규제 정보", "보기", "");
