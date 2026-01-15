@@ -505,8 +505,8 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
     return l;
   };
 
-  // --- 1. General / Controls ---
-  toggle_layout->addWidget(header("일반 / 주행 제어"));
+  // --- 1. 시스템 설정 (System) ---
+  toggle_layout->addWidget(header("시스템 설정"));
   toggle_layout->addWidget(horizontal_line());
 
   toggle_layout->addWidget(new ParamControl("QuietDrive", "조용한 주행", "경고음을 최소화하고 화면 알림을 우선합니다.", "../assets/offroad/icon_mute.png", this));
@@ -521,12 +521,22 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new ParamControl("NoOffroadFix", "시동 끄기 강제 (배터리 방전 방지)", "시동을 끈 후 오픈파일럿이 강제로 오프로드 상태로 전환되고 꺼지도록 합니다.", "../assets/offroad/icon_shell.png", this));
   toggle_layout->addWidget(horizontal_line());
+
+  // --- 2. MADS (상시 조향) ---
+  toggle_layout->addWidget(header("MADS (상시 조향)"));
+  toggle_layout->addWidget(horizontal_line());
+
   toggle_layout->addWidget(new ParamControl("ACCMADSCombo", "크루즈 버튼으로 상시 조향 켜기", "핸들의 크루즈 버튼(SET/RES)으로 상시 조향(MADS)을 활성화합니다.", "../assets/offroad/icon_openpilot.png", this));
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new ParamControl("DisableMADS", "상시 조향(MADS) 끄기", "이 기능을 켜면 순정 오픈파일럿처럼 동작합니다.", "../assets/offroad/icon_openpilot.png", this));
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new ParamControl("HandsOnWheelMonitoring", "핸들 잡음 모니터링", "운전자가 핸들을 잡고 있는지 모니터링하고 경고합니다.", "../assets/offroad/icon_openpilot.png", this));
   toggle_layout->addWidget(horizontal_line());
+
+  // --- 3. 속도 제어 (Speed Control) ---
+  toggle_layout->addWidget(header("속도 제어"));
+  toggle_layout->addWidget(horizontal_line());
+
   toggle_layout->addWidget(new ParamControl("SpeedLimitControl", "제한 속도 자동 맞춤", "지도 데이터와 차량 인터페이스의 속도 제한 정보를 사용합니다.", "../assets/offroad/icon_speed_limit.png", this));
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new ParamControl("SpeedLimitPercOffset", "제한 속도 여유분 설정 (+@)", "설정 속도를 실제 제한 속도보다 약간 높게 설정합니다.", "../assets/offroad/icon_speed_limit.png", this));
@@ -541,19 +551,32 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new CustomAccIncrementsLong());
   toggle_layout->addWidget(horizontal_line());
+
+  // --- 4. 차선 변경 (Lane Change) ---
+  toggle_layout->addWidget(header("차선 변경"));
+  toggle_layout->addWidget(horizontal_line());
+
   toggle_layout->addWidget(new AutoLaneChangeTimer());
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new ParamControl("RoadEdgeDetection", "도로 가장자리 감지 (RED)", "도로 가장자리(갓길) 감지 시 차선 변경을 차단합니다. 블라인드스팟 경고처럼 작동합니다.", "../assets/offroad/icon_road.png", this));
   toggle_layout->addWidget(horizontal_line());
 
-  // --- 2. Toyota Settings ---
-  toggle_layout->addWidget(header("도요타 설정"));
-  toggle_layout->addWidget(horizontal_line());
-  
-  toggle_layout->addWidget(new ToyotaEnforceStockLongitudinal());
+  // --- 5. 조향 튜닝 (Lateral Tuning) ---
+  toggle_layout->addWidget(header("조향 튜닝"));
   toggle_layout->addWidget(horizontal_line());
 
-  // --- 3. Visuals ---
+  toggle_layout->addWidget(new DynamicLaneProfile());
+  toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new ParamControl("LateralTorqueCustom", "토크 튜닝 사용", "차량별 조향 토크 값을 직접 설정합니다. 활성화하면 아래 값이 적용됩니다.", "../assets/offroad/icon_openpilot.png", this));
+  toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new ParamControl("CustomSteerRatioEnable", "조향비 강제 설정 (JSON)", "JSON에 설정된 CustomSteerRatio 값을 사용합니다.", "../assets/offroad/icon_openpilot.png", this));
+  toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new ParamControl("SteerRatioRateEnable", "LiveSR 비율 적용 (JSON)", "JSON에 설정된 SteerRatioRate(%) 비율을 LiveSteerRatio에 곱합니다.", "../assets/offroad/icon_openpilot.png", this));
+  toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new ParamControl("PathOffsetEnable", "차선 오프셋 적용 (JSON)", "JSON에 설정된 PathOffset 만큼 차선 중앙을 이동합니다.", "../assets/offroad/icon_openpilot.png", this));
+  toggle_layout->addWidget(horizontal_line());
+
+  // --- 6. 화면 설정 (Display) ---
   toggle_layout->addWidget(header("화면 설정"));
   toggle_layout->addWidget(horizontal_line());
 
@@ -572,38 +595,23 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(new ParamControl("ShowRadarInfo", "Radar 정보 표시 (앞차 박스)", "선행 차량의 레이더 정보(거리, 속도)를 박스로 표시합니다 (APilot 스타일).", "../assets/offroad/icon_road.png", this));
   toggle_layout->addWidget(horizontal_line());
 
-  // --- 4. 조향 설정 (Lateral Control) ---
-  toggle_layout->addWidget(header("조향 설정"));
+  // --- 7. 도요타 설정 (Toyota) ---
+  toggle_layout->addWidget(header("도요타 설정"));
+  toggle_layout->addWidget(horizontal_line());
+  
+  toggle_layout->addWidget(new ToyotaEnforceStockLongitudinal());
   toggle_layout->addWidget(horizontal_line());
 
-  toggle_layout->addWidget(new DynamicLaneProfile());
-  toggle_layout->addWidget(horizontal_line());
-
-  toggle_layout->addWidget(new ParamControl("LateralTorqueCustom", "토크 튜닝 사용", "차량별 조향 토크 값을 직접 설정합니다. 활성화하면 아래 값이 적용됩니다.", "../assets/offroad/icon_openpilot.png", this));
-  toggle_layout->addWidget(horizontal_line());
-
-  toggle_layout->addWidget(new ParamControl("CustomSteerRatioEnable", "조향비 강제 설정 (JSON)", "JSON에 설정된 CustomSteerRatio 값을 사용합니다.", "../assets/offroad/icon_openpilot.png", this));
-  toggle_layout->addWidget(horizontal_line());
-
-  toggle_layout->addWidget(new ParamControl("SteerRatioRateEnable", "LiveSR 비율 적용 (JSON)", "JSON에 설정된 SteerRatioRate(%) 비율을 LiveSteerRatio에 곱합니다.", "../assets/offroad/icon_openpilot.png", this));
-  toggle_layout->addWidget(horizontal_line());
-
-  toggle_layout->addWidget(new ParamControl("PathOffsetEnable", "차선 오프셋 적용 (JSON)", "JSON에 설정된 PathOffset 만큼 차선 중앙을 이동합니다.", "../assets/offroad/icon_openpilot.png", this));
-  toggle_layout->addWidget(horizontal_line());
-
-  // --- 5. CarrotMan 연동 ---
-  toggle_layout->addWidget(header("CarrotMan 연동"));
+  // --- 8. 안전운전 도우미 ---
+  toggle_layout->addWidget(header("안전운전 도우미"));
   toggle_layout->addWidget(horizontal_line());
 
   toggle_layout->addWidget(new ParamControl("CarrotSpeedControl", "CarrotMan 과속카메라 감속", "CarrotMan 앱과 연동하여 TMap/카카오맵의 과속카메라 정보로 자동 감속합니다.", "../assets/offroad/icon_speed_limit.png", this));
   toggle_layout->addWidget(horizontal_line());
-
   toggle_layout->addWidget(new ParamControl("CarrotMobileCamera", "이동식 카메라 감속", "이동식(삼발이) 카메라에서도 감속합니다. 꺼도 고정식 카메라는 감속합니다.", "../assets/offroad/icon_speed_limit.png", this));
   toggle_layout->addWidget(horizontal_line());
-
   toggle_layout->addWidget(new ParamControl("CarrotSpeedBump", "과속방지턱 감속", "과속방지턱(험프) 앞에서 35km/h로 감속합니다.", "../assets/offroad/icon_speed_limit.png", this));
   toggle_layout->addWidget(horizontal_line());
-
   toggle_layout->addWidget(new ParamControl("CarrotSectionControl", "구간단속 감속", "구간단속 시작 전 감속 및 구간 내 속도 유지", "../assets/offroad/icon_speed_limit.png", this));
   toggle_layout->addWidget(horizontal_line());
 }
