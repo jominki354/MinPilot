@@ -641,17 +641,16 @@ class Controls:
         try:
             custom_sr = float(self.params.get("CustomSteerRatio") or 0) * 0.1
             sr_rate = float(self.params.get("SteerRatioRate") or 100) * 0.01
-        except:
+        except (ValueError, TypeError):
             custom_sr = 0
             sr_rate = 1.0
 
-        if custom_sr_enable:
+        # CustomSteerRatio가 유효한 값(1.0 이상)이고 Enable일 때만 적용
+        if custom_sr_enable and custom_sr >= 1.0:
             sr = custom_sr  # 수동 조향비 사용
         else:
             final_rate = sr_rate if sr_rates_enable else 1.0
-            sr = (
-                max(params.steerRatio, 0.1) * final_rate
-            )  # LiveSR × 반영비율 (활성화 시)
+            sr = max(params.steerRatio, 0.1) * final_rate  # LiveSR × 반영비율
 
         self.VM.update_params(x, sr)
 

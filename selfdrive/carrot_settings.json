@@ -312,6 +312,19 @@
       "max": 150,
       "default": 0,
       "unit": 1
+    },
+    {
+      "group": "조향튜닝",
+      "name": "LateralTorqueAccelFactor",
+      "title": "토크 가속 계수(2500)",
+      "descr": "조향 토크 가속 계수\n기본값: 2500",
+      "egroup": "LAT",
+      "etitle": "TorqueAccelFactor(2500)",
+      "edescr": "Steering torque accel factor\nDefault: 2500",
+      "min": 1000,
+      "max": 5000,
+      "default": 2500,
+      "unit": 100
     }
   ]
 }
