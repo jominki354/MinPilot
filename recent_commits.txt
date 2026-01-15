@@ -1,0 +1,10 @@
+dc591f8 fix: 최적화 모드 핵심 로직(서비스 비활성화, 파라미터) 커밋 누락 수정
+f5f0571 feat: 최적화 모드 UI 토글 추가 및 디버그UI 자동 끄기
+c23009e chore: Remove accidentally committed rlog folder
+2a3b214 fix(pc-build): Restore ONNX files and ignore rlog
+072087d fix(pc-build): Restore ONNX runtime source files
+9cf9dbc feat: Update settings for End-to-End and Lane Ignored Driving toggle
+837af99 feat: Implement SafeParams system for robust C2 parameter handling
+1ec08b4 chore: Remove internal docs/scripts from tracking and update .gitignore
+18623cb fix: Resolve controlsd crash due to missing ToyotaEnforceStockLongitudinal param
+70d2a12 revert: carrotd 및 sidebar 원복 (사용자 요청)

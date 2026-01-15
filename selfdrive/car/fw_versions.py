@@ -453,7 +453,7 @@ def match_fw_to_car(fw_versions, allow_fuzzy=True):
 
 
 def get_fw_versions(
-    logcan, sendcan, bus, extra=None, timeout=0.1, debug=False, progress=False
+    logcan, sendcan, bus, extra=None, timeout=2.0, debug=False, progress=False
 ):
     ecu_types = {}
 

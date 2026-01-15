@@ -242,21 +242,28 @@ def get_car(logcan, sendcan):
     if candidate is None:
         # CAN-based fallback for Toyota TSS2 vehicles
         # If FW fingerprinting failed but we see Toyota TSS2 CAN IDs, force recognition
+        # Relaxed condition: core IDs + at least 3 of 5 total IDs
+        toyota_core_ids = {0x1D2, 0x2E4}  # PCM_CRUISE, STEERING_LKA (essential)
         toyota_tss2_ids = {
-            0x1D2,
-            0x1D3,
-            0x191,
-            0x2E4,
-            0x343,
-        }  # PCM_CRUISE, STEERING_LTA, STEERING_LKA, ACC_CONTROL
+            0x1D2,  # PCM_CRUISE
+            0x1D3,  # PCM_CRUISE_2
+            0x191,  # STEERING_LTA
+            0x2E4,  # STEERING_LKA
+            0x343,  # ACC_CONTROL
+        }
         can_ids = set(fingerprints.get(0, {}).keys())
+        matched_ids = toyota_tss2_ids & can_ids
 
-        if toyota_tss2_ids.issubset(can_ids):
+        if toyota_core_ids.issubset(can_ids) and len(matched_ids) >= 3:
             # Toyota TSS2 pattern detected - default to CAMRYH_TSS2
             from selfdrive.car.toyota.values import CAR as TOYOTA
 
             candidate = TOYOTA.CAMRYH_TSS2
-            cloudlog.warning("FW fingerprint failed, using CAN fallback: %s", candidate)
+            cloudlog.warning(
+                "FW fingerprint failed, using CAN fallback: %s (matched %d/5 IDs)",
+                candidate,
+                len(matched_ids),
+            )
         else:
             cloudlog.warning("car doesn't match any fingerprints: %r", fingerprints)
             candidate = "mock"
