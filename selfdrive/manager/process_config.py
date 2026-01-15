@@ -23,7 +23,9 @@ procs = [
         enabled=(not PC or WEBCAM),
         driverview=True,
     ),
-    NativeProcess("logcatd", "selfdrive/logcatd", ["./logcatd"]),
+    NativeProcess(
+        "logcatd", "selfdrive/logcatd", ["./logcatd"], enabled=(not DISABLE_LOGGING)
+    ),
     NativeProcess(
         "loggerd", "selfdrive/loggerd", ["./loggerd"], enabled=(not DISABLE_LOGGING)
     ),
@@ -31,7 +33,9 @@ procs = [
     NativeProcess(
         "navd", "selfdrive/ui/navd", ["./navd"], enabled=(PC or TICI), persistent=True
     ),
-    NativeProcess("proclogd", "selfdrive/proclogd", ["./proclogd"]),
+    NativeProcess(
+        "proclogd", "selfdrive/proclogd", ["./proclogd"], enabled=(not DISABLE_LOGGING)
+    ),
     NativeProcess(
         "sensord",
         "selfdrive/sensord",
@@ -70,7 +74,10 @@ procs = [
     PythonProcess("thermald", "selfdrive.thermald.thermald", persistent=True),
     PythonProcess("timezoned", "selfdrive.timezoned", enabled=TICI, persistent=True),
     PythonProcess(
-        "tombstoned", "selfdrive.tombstoned", enabled=not PC, persistent=True
+        "tombstoned",
+        "selfdrive.tombstoned",
+        enabled=(not PC and not DISABLE_LOGGING),
+        persistent=True,
     ),
     PythonProcess("updated", "selfdrive.updated", enabled=not PC, persistent=True),
     PythonProcess(
@@ -79,9 +86,9 @@ procs = [
         persistent=True,
         enabled=(not DISABLE_LOGGING),
     ),
-    PythonProcess("mapd", "selfdrive.mapd.mapd"),
+    PythonProcess("mapd", "selfdrive.mapd.mapd", enabled=(not DISABLE_LOGGING)),
     PythonProcess("systemd", "selfdrive.systemd", persistent=True),
-    PythonProcess("gpxd", "selfdrive.gpxd.gpxd"),
+    PythonProcess("gpxd", "selfdrive.gpxd.gpxd", enabled=(not DISABLE_LOGGING)),
     PythonProcess("carrotd", "selfdrive.carrotd", persistent=True),
     PythonProcess("settings_server", "selfdrive.settings_server", persistent=True),
     # EON only
