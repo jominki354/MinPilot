@@ -633,7 +633,26 @@ class Controls:
         # Update VehicleModel
         params = self.sm["liveParameters"]
         x = max(params.stiffnessFactor, 0.1)
-        sr = max(params.steerRatio, 0.1)
+
+        # CustomSteerRatio / SteerRatioRate 적용
+        custom_sr_enable = self.params.get_bool("CustomSteerRatioEnable")
+        sr_rates_enable = self.params.get_bool("SteerRatioRateEnable")
+
+        try:
+            custom_sr = float(self.params.get("CustomSteerRatio") or 0) * 0.1
+            sr_rate = float(self.params.get("SteerRatioRate") or 100) * 0.01
+        except:
+            custom_sr = 0
+            sr_rate = 1.0
+
+        if custom_sr_enable:
+            sr = custom_sr  # 수동 조향비 사용
+        else:
+            final_rate = sr_rate if sr_rates_enable else 1.0
+            sr = (
+                max(params.steerRatio, 0.1) * final_rate
+            )  # LiveSR × 반영비율 (활성화 시)
+
         self.VM.update_params(x, sr)
 
         lat_plan = self.sm["lateralPlan"]

@@ -273,6 +273,45 @@
       "max": 1,
       "default": 0,
       "unit": 1
+    },
+    {
+      "group": "조향튜닝",
+      "name": "CustomSteerRatio",
+      "title": "조향비(0=자동)",
+      "descr": "조향비 수동 설정\n0: LiveSteerRatio 사용",
+      "egroup": "LAT",
+      "etitle": "CustomSteerRatio(0)",
+      "edescr": "Manual steering ratio\n0: Use LiveSteerRatio",
+      "min": 0,
+      "max": 300,
+      "default": 0,
+      "unit": 1
+    },
+    {
+      "group": "조향튜닝",
+      "name": "SteerRatioRate",
+      "title": "LiveSR 반영비율(%)",
+      "descr": "LiveSteerRatio 반영 비율\n100: 100% 반영",
+      "egroup": "LAT",
+      "etitle": "SteerRatioRate(100)",
+      "edescr": "LiveSR application rate(%)\n100: 100%",
+      "min": 30,
+      "max": 200,
+      "default": 100,
+      "unit": 1
+    },
+    {
+      "group": "조향튜닝",
+      "name": "PathOffset",
+      "title": "차선 좌우보정(0)",
+      "descr": "차선 중앙 위치 보정\n(-)좌측 / (+)우측",
+      "egroup": "LAT",
+      "etitle": "PathOffset(0)",
+      "edescr": "Lane center offset\n(-)Left / (+)Right",
+      "min": -150,
+      "max": 150,
+      "default": 0,
+      "unit": 1
     }
   ]
 }

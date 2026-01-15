@@ -73,6 +73,12 @@ def manager_init():
         ("LateralTorqueCustom", "0"),
         ("LateralTorqueAccelFactor", "2500"),
         ("LateralTorqueFriction", "100"),
+        ("CustomSteerRatio", "0"),
+        ("CustomSteerRatioEnable", "0"),
+        ("SteerRatioRate", "100"),
+        ("SteerRatioRateEnable", "0"),
+        ("PathOffset", "0"),
+        ("PathOffsetEnable", "0"),
     ]
     if not PC:
         default_params.append(

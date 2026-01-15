@@ -580,6 +580,15 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(new ParamControl("LateralTorqueCustom", "토크 튜닝 사용", "차량별 조향 토크 값을 직접 설정합니다. 활성화하면 아래 값이 적용됩니다.", "../assets/offroad/icon_openpilot.png", this));
   toggle_layout->addWidget(horizontal_line());
 
+  toggle_layout->addWidget(new ParamControl("CustomSteerRatioEnable", "조향비 강제 설정 (JSON)", "JSON에 설정된 CustomSteerRatio 값을 사용합니다.", "../assets/offroad/icon_openpilot.png", this));
+  toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new ParamControl("SteerRatioRateEnable", "LiveSR 비율 적용 (JSON)", "JSON에 설정된 SteerRatioRate(%) 비율을 LiveSteerRatio에 곱합니다.", "../assets/offroad/icon_openpilot.png", this));
+  toggle_layout->addWidget(horizontal_line());
+
+  toggle_layout->addWidget(new ParamControl("PathOffsetEnable", "차선 오프셋 적용 (JSON)", "JSON에 설정된 PathOffset 만큼 차선 중앙을 이동합니다.", "../assets/offroad/icon_openpilot.png", this));
+  toggle_layout->addWidget(horizontal_line());
+
   // --- 5. CarrotMan 연동 ---
   toggle_layout->addWidget(header("CarrotMan 연동"));
   toggle_layout->addWidget(horizontal_line());
