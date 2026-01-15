@@ -1,0 +1,235 @@
+[  0%] Built target ui_simulator_autogen_timestamp_deps
+[ 12%] Built target ui_simulator_autogen
+[ 25%] Building CXX object CMakeFiles/ui_simulator.dir/main.cpp.o
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp: In member function ‘virtual void HudDisplay::paintEvent(QPaintEvent*)’:
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:85:19: error: variable ‘QPainter p’ has initializer but incomplete type
+   85 |         QPainter p(this);
+      |                   ^
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:86:35: error: incomplete type ‘QPainter’ used in nested name specifier
+   86 |         p.setRenderHint(QPainter::Antialiasing);
+      |                                   ^~~~~~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp: In member function ‘void HudDisplay::drawLaneGraphics(QPainter&)’:
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:133:9: error: invalid use of incomplete type ‘class QPainter’
+  133 |         p.setPen(QPen(QColor(100, 100, 100, 150), 4));
+      |         ^
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qapplication.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication:1,
+                 from /mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:4:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:137:21: error: invalid use of incomplete type ‘class QPainter’
+  137 |                     p.drawLine(roadEdges[edge].v[i], roadEdges[edge].v[i+1]);
+      |                     ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:154:21: error: invalid use of incomplete type ‘class QPainter’
+  154 |                     p.setPen(QPen(laneColors[lane], lane == 1 || lane == 2 ? 6 : 3));
+      |                     ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:156:25: error: invalid use of incomplete type ‘class QPainter’
+  156 |                         p.drawLine(laneVertices[lane].v[i], laneVertices[lane].v[i+1]);
+      |                         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:169:13: error: invalid use of incomplete type ‘class QPainter’
+  169 |             p.setPen(QPen(pathColor, 8));
+      |             ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:171:17: error: invalid use of incomplete type ‘class QPainter’
+  171 |                 p.drawLine(trackVertices.v[i], trackVertices.v[i+1]);
+      |                 ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp: In member function ‘void HudDisplay::drawLeadVehicle(QPainter&)’:
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:182:13: error: invalid use of incomplete type ‘class QPainter’
+  182 |             p.setPen(QPen(QColor(255, 100, 100), 3));
+      |             ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:183:13: error: invalid use of incomplete type ‘class QPainter’
+  183 |             p.setBrush(QColor(255, 100, 100, 50));
+      |             ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:186:13: error: invalid use of incomplete type ‘class QPainter’
+  186 |             p.drawRect(leadRect);
+      |             ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp: In member function ‘void HudDisplay::drawHud(QPainter&)’:
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:195:9: error: invalid use of incomplete type ‘class QPainter’
+  195 |         p.fillRect(0, 0, 1920, 250, bg);
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:200:9: error: invalid use of incomplete type ‘class QPainter’
+  200 |         p.setPen(QPen(QColor(255, 255, 255, 100), 10));
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:201:9: error: invalid use of incomplete type ‘class QPainter’
+  201 |         p.setBrush(QColor(0, 0, 0, 100));
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:202:9: error: invalid use of incomplete type ‘class QPainter’
+  202 |         p.drawRoundedRect(maxRect, 20, 20);
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:206:9: error: invalid use of incomplete type ‘class QPainter’
+  206 |         p.setFont(labelFont);
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:207:9: error: invalid use of incomplete type ‘class QPainter’
+  207 |         p.setPen(QColor(255, 255, 255, 200));
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:208:9: error: invalid use of incomplete type ‘class QPainter’
+  208 |         p.drawText(maxRect.center().x() - 50, 118, "최고속도");
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:211:9: error: invalid use of incomplete type ‘class QPainter’
+  211 |         p.setFont(speedFont);
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:212:9: error: invalid use of incomplete type ‘class QPainter’
+  212 |         p.setPen(Qt::white);
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:213:9: error: invalid use of incomplete type ‘class QPainter’
+  213 |         p.drawText(maxRect.center().x() - 30, 212, QString::number((int)maxSpeed));
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:217:9: error: invalid use of incomplete type ‘class QPainter’
+  217 |         p.setFont(bigFont);
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:221:9: error: invalid use of incomplete type ‘class QPainter’
+  221 |         p.drawText(960 - speedWidth/2, 210, speedStr);
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:225:9: error: invalid use of incomplete type ‘class QPainter’
+  225 |         p.setFont(unitFont);
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:226:9: error: invalid use of incomplete type ‘class QPainter’
+  226 |         p.setPen(QColor(255, 255, 255, 200));
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:227:9: error: invalid use of incomplete type ‘class QPainter’
+  227 |         p.drawText(925, 290, "km/h");
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:230:9: error: invalid use of incomplete type ‘class QPainter’
+  230 |         p.setPen(Qt::NoPen);
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:231:9: error: invalid use of incomplete type ‘class QPainter’
+  231 |         p.setBrush(isEngaged ? QColor(23, 162, 73) : QColor(75, 75, 75));
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:232:9: error: invalid use of incomplete type ‘class QPainter’
+  232 |         p.drawEllipse(1920 - 192 - bdr*2, bdr*1.5, 192, 192);
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:237:9: error: invalid use of incomplete type ‘class QPainter’
+  237 |         p.setFont(modeFont);
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:238:9: error: invalid use of incomplete type ‘class QPainter’
+  238 |         p.setPen(QColor(255, 255, 255, 200));
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:239:9: error: invalid use of incomplete type ‘class QPainter’
+  239 |         p.drawText(1920 - 200 - bdr*2, bdr*1.5 + 220, modeText);
+      |         ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:244:13: error: invalid use of incomplete type ‘class QPainter’
+  244 |             p.setBrush(QColor(0, 0, 0, 100));
+      |             ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:245:13: error: invalid use of incomplete type ‘class QPainter’
+  245 |             p.setPen(Qt::NoPen);
+      |             ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:246:13: error: invalid use of incomplete type ‘class QPainter’
+  246 |             p.drawRect(barRect);
+      |             ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:249:13: error: invalid use of incomplete type ‘class QPainter’
+  249 |             p.setFont(roadFont);
+      |             ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:250:13: error: invalid use of incomplete type ‘class QPainter’
+  250 |             p.setPen(QColor(255, 255, 255, 200));
+      |             ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+/mnt/e/c2/MinPilot/tools/ui_simulator/main.cpp:253:13: error: invalid use of incomplete type ‘class QPainter’
+  253 |             p.drawText(960 - roadWidth/2, 1057, roadName);
+      |             ^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qwindowdefs.h:63:7: note: forward declaration of ‘class QPainter’
+   63 | class QPainter;
+      |       ^~~~~~~~
+make[2]: *** [CMakeFiles/ui_simulator.dir/build.make:125: CMakeFiles/ui_simulator.dir/main.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:86: CMakeFiles/ui_simulator.dir/all] Error 2
+make: *** [Makefile:136: all] Error 2
