@@ -27,12 +27,14 @@ include_directories(
 set(MOCK_SOURCES
     mock/mock_messaging.cpp
     mock/mock_ui_state.cpp
+    element_position.cpp
 )
 
 # Main application sources
 set(APP_SOURCES
     main.cpp
     control_panel.cpp
+    hud_display.cpp
 )
 
 # Build executable

@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <sstream>
 #include <QString>
+#include <QTime>
 
 #include "selfdrive/common/timing.h"
 #include "selfdrive/ui/qt/util.h"
@@ -468,53 +469,29 @@ void OnroadHud::paintEvent(QPaintEvent *event) {
   bg.setColorAt(1, QColor::fromRgbF(0, 0, 0, 0));
   p.fillRect(0, 0, width(), header_h, bg);
 
-  // max speed
+  // MinPilot: Central speed pair (current speed | cruise speed)
+  drawSpeedPair(p);
+
+  // MinPilot: Top left info (clock | temperature)
+  drawTopLeftInfo(p);
+
+  // MinPilot: CarrotPilot speed camera info
+  drawCarrotCameraInfo(p);
+
   QRect rc(bdr_s * 2, bdr_s * 1.5, 184, 202);
-  p.setPen(QPen(QColor(0xff, 0xff, 0xff, 100), 10));
-  p.setBrush(QColor(0, 0, 0, 100));
-  p.drawRoundedRect(rc, 20, 20);
-  p.setPen(Qt::NoPen);
-
-  configFont(p, "Open Sans", 48, "Regular");
-  drawText(p, rc.center().x(), 118, "최고속도", is_cruise_set ? 200 : 100);
-  if (is_cruise_set) {
-    configFont(p, "Open Sans", 88, is_cruise_set ? "Bold" : "SemiBold");
-    drawText(p, rc.center().x(), 212, maxSpeed, 255);
-  } else {
-    configFont(p, "Open Sans", 80, "SemiBold");
-    drawText(p, rc.center().x(), 212, maxSpeed, 100);
-  }
-
-  // current speed
-  configFont(p, "Open Sans", 176, "Bold");
-  drawSpeedText(p, rect().center().x(), 210, speed, is_brakelight_on ? QColor(0xff, 0, 0, 255) : QColor(0xff, 0xff, 0xff, 255));
-  configFont(p, "Open Sans", 66, "Regular");
-  drawText(p, rect().center().x(), 290, speedUnit, 200);
 
   if (engageable) {
     if (showDebugUI && showVTC) {
       drawVisionTurnControllerUI(p, rect().right() - 184 - bdr_s, int(bdr_s * 1.5), 184, vtcColor, vtcSpeed, 100);
-    } else {
-      // engage-ability icon
-      drawIcon(p, rect().right() - radius / 2 - bdr_s * 2, radius / 2 + int(bdr_s * 1.5),
-               engage_img, bg_colors[status], 1.0);
     }
+    // Note: Engage icon removed for MinPilot UI
+    // Note: Speed Limit Sign removed - will be replaced by CarrotPilot camera info
+    // Note: Turn Speed Sign removed
 
     // Hands on wheel icon
     if (showHowAlert) {
-      drawIcon(p, rect().right() - radius / 2 - bdr_s * 2, int(bdr_s * 1.5) + 2 * radius + bdr_s + radius / 2,
+      drawIcon(p, rect().right() - radius / 2 - bdr_s * 2, int(bdr_s * 1.5) + radius / 2,
                how_img, bg_colors[howWarning ? STATUS_WARNING : STATUS_ALERT], 1.0);
-    }
-
-    // Speed Limit Sign
-    if (showSpeedLimit) {
-      drawSpeedSign(p, speed_sgn_rc, speedLimit, slcSubText, slcSubTextSize, mapSourcedSpeedLimit, slcActive);
-    }
-
-    // Turn Speed Sign
-    if (showTurnSpeedLimit) {
-      rc.moveTop(speed_sgn_rc.bottom() + bdr_s);
-      drawTrunSpeedSign(p, rc, turnSpeedLimit, tscSubText, curveSign, tscActive);
     }
 
     // Stand Still Timer
@@ -529,19 +506,13 @@ void OnroadHud::paintEvent(QPaintEvent *event) {
              dm_img, QColor(0, 0, 0, 70), dmActive ? 1.0 : 0.2);
   }
 
-  // MADS icon
-  drawMadsIcon(p, rect().right() - radius / 2 - bdr_s * 2 - 184, radius / 2 + int(bdr_s * 1.5),
-           madsEnabled ? suspended ? mads_imgs[0] : mads_imgs[1] : mads_imgs[0], QColor(75, 75, 75, 75), 1.0);
+  // Note: MADS icon removed for MinPilot UI
 
-  // Bottom bar road name
-  if (showDebugUI && !roadName.isEmpty()) {
-    const int h = 60;
-    QRect bar_rc(rect().left(), rect().bottom() - h, rect().width(), h);
-    p.setBrush(QColor(0, 0, 0, 100));
-    p.drawRect(bar_rc);
-    configFont(p, "Open Sans", 38, "Bold");
-    drawCenteredText(p, bar_rc.center().x(), bar_rc.center().y(), roadName, QColor(255, 255, 255, 200));
-  }
+  // MinPilot: ACC/LKAS status indicators (bottom right)
+  drawStatusIndicators(p);
+
+  // MinPilot: Road name bar with gradient (bottom center)
+  drawRoadNameBar(p);
 
   // Right Dev UI
   QRect rc2(rect().right() - (bdr_s * 2), bdr_s * 1.5, 184, 202);
@@ -1215,4 +1186,213 @@ void NvgWindow::showEvent(QShowEvent *event) {
 
   ui_update_params(&QUIState::ui_state);
   prev_draw_t = millis_since_boot();
+}
+
+// ============================================
+// MinPilot UI Functions
+// ============================================
+
+void OnroadHud::drawSpeedPair(QPainter &p) {
+  // Central speed pair: [current speed] | [cruise speed]
+  int centerX = rect().center().x();
+  int y = 30;  // Same as simulator
+  int fontSize = 90;
+  int gap = 25;  // Gap between speeds and divider
+
+  // Current speed (left side)
+  configFont(p, "Inter", fontSize, "Bold");
+  p.setPen(is_brakelight_on ? MP_ALERT : Qt::white);
+  QFontMetrics fm1(p.font());
+  int speedWidth = fm1.horizontalAdvance(speed);
+  int speedHeight = fm1.height();
+  int speedY = y + speedHeight;  // Removed +25 padding
+  p.drawText(centerX - speedWidth - gap, speedY, speed);
+
+  // "현재속도" label just above current speed number
+  configFont(p, "Open Sans", 20, "Bold");  // Reduced from 22 to 20
+  p.setPen(MP_GREY);
+  QFontMetrics fmLabel(p.font());
+  int labelWidth = fmLabel.horizontalAdvance("현재속도");
+  int labelHeight = fmLabel.height();
+  int labelY = speedY - speedHeight + labelHeight - 5;  // Closer to number
+  p.drawText(centerX - speedWidth/2 - gap - labelWidth/2, labelY, "현재속도");
+
+  // Divider line
+  p.setPen(QPen(MP_GREY, 4));
+  p.drawLine(centerX, labelY - labelHeight + 5, centerX, speedY);
+
+  // Cruise speed (right side)
+  configFont(p, "Inter", fontSize, "Bold");
+  p.setPen(is_cruise_set ? Qt::white : MP_GREY);
+  QFontMetrics fmCruise(p.font());
+  int cruiseWidth = fmCruise.horizontalAdvance(maxSpeed);
+  p.drawText(centerX + gap, speedY, maxSpeed);
+
+  // "크루즈" label just above cruise speed number
+  configFont(p, "Open Sans", 20, "Bold");
+  p.setPen(MP_GREY);
+  int cruiseLabelWidth = fmLabel.horizontalAdvance("크루즈");
+  p.drawText(centerX + gap + cruiseWidth/2 - cruiseLabelWidth/2, labelY, "크루즈");
+
+  // Speed unit label (centered below everything)
+  configFont(p, "Open Sans", 20, "Regular");
+  p.setPen(MP_GREY);
+  QFontMetrics fmUnit(p.font());
+  int unitWidth = fmUnit.horizontalAdvance(speedUnit);
+  p.drawText(centerX - unitWidth / 2, speedY + 25, speedUnit);
+}
+
+void OnroadHud::drawStatusIndicators(QPainter &p) {
+  // ACC/LKAS status indicators at bottom right
+  int x = rect().right() - 220;
+  int y = rect().bottom() - 160;
+  int dotSize = 20;
+  int spacing = 50;
+
+  auto drawIndicator = [&](int dy, const QString& label, bool active) {
+    // Status dot
+    p.setPen(Qt::NoPen);
+    p.setBrush(active ? MP_SUCCESS : MP_GREY);
+    p.drawEllipse(x, y + dy, dotSize, dotSize);
+
+    // Label
+    configFont(p, "Open Sans", 32, "Bold");
+    p.setPen(Qt::white);
+    p.drawText(x + dotSize + 12, y + dy + 16, label);
+  };
+
+  // ACC: Active when engaged and cruise is set
+  bool accActive = engageable && is_cruise_set;
+  drawIndicator(0, "ACC", accActive);
+
+  // LKAS: Active when MADS enabled and not suspended
+  bool lkasActive = madsEnabled && !suspended;
+  drawIndicator(spacing, "LKAS", lkasActive);
+}
+
+void OnroadHud::drawRoadNameBar(QPainter &p) {
+  if (roadName.isEmpty()) return;
+
+  const int h = 140;
+  QRect bar(0, rect().bottom() - h, rect().width(), h);
+
+  // Gradient background
+  QLinearGradient grad(0, bar.top(), 0, bar.bottom());
+  grad.setColorAt(0, QColor(0, 0, 0, 0));
+  grad.setColorAt(0.4, QColor(0, 0, 0, 100));
+  grad.setColorAt(1, QColor(0, 0, 0, 160));
+  p.fillRect(bar, grad);
+
+  // Road name text
+  configFont(p, "Open Sans", 44, "Bold");
+  p.setPen(Qt::white);
+  QFontMetrics fm(p.font());
+  int textWidth = fm.horizontalAdvance(roadName);
+  p.drawText(bar.center().x() - textWidth / 2, bar.center().y() + 15, roadName);
+}
+
+void OnroadHud::drawTopLeftInfo(QPainter &p) {
+  // Top left: Clock | Temperature
+  int x = 60;
+  int y = 50;
+  
+  // Get current time
+  QTime currentTime = QTime::currentTime();
+  QString timeStr = currentTime.toString("HH:mm");
+  
+  // Clock
+  configFont(p, "Inter", 36, "Bold");
+  p.setPen(Qt::white);
+  QFontMetrics fmTime(p.font());
+  p.drawText(x, y + 40, timeStr);
+  
+  // Divider
+  int timeWidth = fmTime.horizontalAdvance(timeStr);
+  p.setPen(QPen(MP_GREY, 2));
+  p.drawLine(x + timeWidth + 20, y + 10, x + timeWidth + 20, y + 45);
+  
+  // Temperature from device state
+  int deviceTemp = QUIState::ui_state.scene.deviceState.getAmbientTempC();
+  QString tempStr = QString::number(deviceTemp) + "°C";
+  configFont(p, "Inter", 32, "Bold");
+  
+  // Color based on temperature
+  QColor tempColor = Qt::white;
+  if (deviceTemp >= 80) {
+    tempColor = MP_ALERT;
+  } else if (deviceTemp >= 60) {
+    tempColor = QColor(255, 188, 0);  // Orange
+  }
+  p.setPen(tempColor);
+  p.drawText(x + timeWidth + 40, y + 38, tempStr);
+}
+
+void OnroadHud::drawCarrotCameraInfo(QPainter &p) {
+  // CarrotPilot speed camera info
+  Params params_mem("/dev/shm/params");
+  
+  std::string carrot_active_str = params_mem.get("CarrotActive");
+  bool carrot_active = !carrot_active_str.empty() && carrot_active_str == "1";
+  
+  if (!carrot_active) return;
+  
+  std::string spd_limit_str = params_mem.get("CarrotSpdLimit");
+  std::string road_limit_str = params_mem.get("CarrotRoadLimit");
+  std::string camera_dist_str = params_mem.get("CarrotCameraDist");
+  std::string camera_type_str = params_mem.get("CarrotCameraType");
+  
+  int spd_limit = spd_limit_str.empty() ? 0 : std::stoi(spd_limit_str);
+  int road_limit = road_limit_str.empty() ? 0 : std::stoi(road_limit_str);
+  int camera_dist = camera_dist_str.empty() ? 0 : std::stoi(camera_dist_str);
+  int camera_type = camera_type_str.empty() ? -1 : std::stoi(camera_type_str);
+  
+  if (spd_limit <= 0 && road_limit <= 0) return;
+  
+  // Position: Left center of screen
+  int x = 50;
+  int y = rect().center().y() - 60;  // Vertical center
+  
+  // --- Camera Icon (speed limit circle) ---
+  int iconSize = 120;
+  p.setPen(QPen(MP_ALERT, 8));
+  p.setBrush(Qt::white);
+  p.drawEllipse(x, y, iconSize, iconSize);
+  
+  // Speed limit inside circle
+  QString limitStr = QString::number(spd_limit > 0 ? spd_limit : road_limit);
+  configFont(p, "Inter", 48, "Bold");
+  p.setPen(Qt::black);
+  QFontMetrics fm(p.font());
+  int textWidth = fm.horizontalAdvance(limitStr);
+  p.drawText(x + iconSize/2 - textWidth/2, y + iconSize/2 + 18, limitStr);
+  
+  // --- Info right of icon (Distance + Camera Type) ---
+  int infoX = x + iconSize + 20;
+  int infoY = y + iconSize/2;
+  
+  // Distance
+  if (camera_dist > 0) {
+    QString distStr = QString::number(camera_dist) + "m";
+    configFont(p, "Inter", 28, "Bold");
+    p.setPen(Qt::white);
+    p.drawText(infoX, infoY - 5, distStr);
+  }
+  
+  // Camera type in parentheses
+  QString cameraTypeStr;
+  if (camera_type == 0 || camera_type == 1 || camera_type == 8) {
+    cameraTypeStr = "(고정식)";
+  } else if (camera_type == 7) {
+    cameraTypeStr = "(이동식)";
+  } else if (camera_type == 2 || camera_type == 3 || camera_type == 4) {
+    cameraTypeStr = "(구간단속)";
+  } else if (camera_type == 22) {
+    cameraTypeStr = "(과속방지턱)";
+  }
+  
+  if (!cameraTypeStr.isEmpty()) {
+    configFont(p, "Open Sans", 24, "Bold");
+    p.setPen(MP_GREY);
+    p.drawText(infoX, infoY + 30, cameraTypeStr);
+  }
 }

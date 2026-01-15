@@ -204,6 +204,8 @@ def main():
                 # Params에 저장 (controlsd에서 읽음)
                 params_mem.put("CarrotSpdLimit", str(int(target_speed)))
                 params_mem.put("CarrotRoadLimit", str(road_limit))
+                params_mem.put("CarrotCameraDist", str(sdi_dist))
+                params_mem.put("CarrotCameraType", str(sdi_type))
                 params_mem.put("CarrotActive", "1")
 
                 # 도로명 저장 (UI 표시용)

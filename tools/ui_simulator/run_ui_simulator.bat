@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul
 REM MinPilot UI Simulator 실행 스크립트
 
 echo [MinPilot UI Simulator] 시작 중...

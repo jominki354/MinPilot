@@ -7,6 +7,12 @@
 #include "selfdrive/ui/qt/widgets/cameraview.h"
 #include "selfdrive/ui/ui.h"
 
+// MinPilot Color Palette
+const QColor MP_BLACK   = QColor(0x00, 0x00, 0x00);       // #000000
+const QColor MP_BLUE    = QColor(0x00, 0x88, 0xFF);       // #0088FF
+const QColor MP_GREY    = QColor(0x80, 0x80, 0x80);       // #808080
+const QColor MP_SUCCESS = QColor(0x00, 0xD1, 0x66);       // #00D166
+const QColor MP_ALERT   = QColor(0xFF, 0x4D, 0x4D);       // #FF4D4D
 
 // ***** onroad widgets *****
 
@@ -105,6 +111,12 @@ private:
   int drawDevUiElementRight(QPainter &p, int x, int y, const char* value, const char* label, const char* units, QColor &color);
   int drawDevUiElementLeft(QPainter &p, int x, int y, const char* value, const char* label, const char* units, QColor &color);
   void drawColoredText(QPainter &p, int x, int y, const QString &text, QColor &color);
+  // MinPilot UI functions
+  void drawSpeedPair(QPainter &p);
+  void drawStatusIndicators(QPainter &p);
+  void drawRoadNameBar(QPainter &p);
+  void drawTopLeftInfo(QPainter &p);
+  void drawCarrotCameraInfo(QPainter &p);
   void paintEvent(QPaintEvent *event) override;
 
   QPixmap engage_img;
