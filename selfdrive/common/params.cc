@@ -151,6 +151,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"SteerRatioRateEnable", PERSISTENT},
     {"PathOffset", PERSISTENT},
     {"PathOffsetEnable", PERSISTENT},
+    {"RoadEdgeDetection", PERSISTENT},
     {"ShowRadarInfo", PERSISTENT},
     {"IsOffroad", CLEAR_ON_MANAGER_START},
     {"IsOnroad", PERSISTENT},

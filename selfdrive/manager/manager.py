@@ -79,6 +79,7 @@ def manager_init():
         ("SteerRatioRateEnable", "0"),
         ("PathOffset", "0"),
         ("PathOffsetEnable", "0"),
+        ("RoadEdgeDetection", "0"),
     ]
     if not PC:
         default_params.append(

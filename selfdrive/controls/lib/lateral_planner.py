@@ -15,6 +15,7 @@ from selfdrive.controls.lib.lane_planner import LanePlanner, TRAJECTORY_SIZE
 from selfdrive.config import Conversions as CV
 import cereal.messaging as messaging
 from cereal import log
+from selfdrive.controls.lib.road_edge_detector import RoadEdgeDetector
 
 LaneChangeState = log.LateralPlan.LaneChangeState
 LaneChangeDirection = log.LateralPlan.LaneChangeDirection
@@ -61,6 +62,10 @@ class LateralPlanner:
         self.dynamic_lane_profile_status = False
         self.dynamic_lane_profile_status_buffer = False
         self.path_offset = 0.0  # PathOffset (cm → m)
+
+        # Road Edge Detection
+        road_edge_enabled = self.params.get_bool("RoadEdgeDetection")
+        self.road_edge_detector = RoadEdgeDetector(enabled=road_edge_enabled)
 
         self.lane_change_timer = 0.0
 
@@ -138,6 +143,18 @@ class LateralPlanner:
                 [md.position.xStd, md.position.yStd, md.position.zStd]
             )
 
+        # Road Edge Detector 업데이트
+        if hasattr(md, "roadEdgeStds") and hasattr(md, "laneLineProbs"):
+            road_edge_stds = (
+                list(md.roadEdgeStds) if len(md.roadEdgeStds) >= 2 else [1.0, 1.0]
+            )
+            lane_line_probs = (
+                list(md.laneLineProbs)
+                if len(md.laneLineProbs) >= 4
+                else [0.0, 0.0, 0.0, 0.0]
+            )
+            self.road_edge_detector.update(road_edge_stds, lane_line_probs)
+
         # Lane change logic
         one_blinker = sm["carState"].leftBlinker != sm["carState"].rightBlinker
         below_lane_change_speed = v_ego < LANE_CHANGE_SPEED_MIN
@@ -186,16 +203,29 @@ class LateralPlanner:
                     and self.lane_change_direction == LaneChangeDirection.right
                 )
 
+                # Road Edge Detection - 도로 가장자리 감지 시 차선 변경 차단
+                road_edge_blocked = (
+                    self.road_edge_detector.should_block_lane_change_left()
+                    and self.lane_change_direction == LaneChangeDirection.left
+                ) or (
+                    self.road_edge_detector.should_block_lane_change_right()
+                    and self.lane_change_direction == LaneChangeDirection.right
+                )
+
                 self.lane_change_wait_timer += DT_MDL
                 if not one_blinker or below_lane_change_speed:
                     self.lane_change_state = LaneChangeState.off
                 elif (
-                    torque_applied
-                    or (
-                        lane_change_auto_timer
-                        and self.lane_change_wait_timer > lane_change_auto_timer
+                    (
+                        torque_applied
+                        or (
+                            lane_change_auto_timer
+                            and self.lane_change_wait_timer > lane_change_auto_timer
+                        )
                     )
-                ) and not blindspot_detected:
+                    and not blindspot_detected
+                    and not road_edge_blocked
+                ):
                     self.lane_change_state = LaneChangeState.laneChangeStarting
 
             # LaneChangeState.laneChangeStarting

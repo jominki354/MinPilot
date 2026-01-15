@@ -543,6 +543,8 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new AutoLaneChangeTimer());
   toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new ParamControl("RoadEdgeDetection", "도로 가장자리 감지 (RED)", "도로 가장자리(갓길) 감지 시 차선 변경을 차단합니다. 블라인드스팟 경고처럼 작동합니다.", "../assets/offroad/icon_road.png", this));
+  toggle_layout->addWidget(horizontal_line());
 
   // --- 2. Toyota Settings ---
   toggle_layout->addWidget(header("도요타 설정"));
