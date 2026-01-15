@@ -594,16 +594,19 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
   toggle_layout->addWidget(new ParamControl("ShowRadarInfo", "Radar 정보 표시 (앞차 박스)", "선행 차량의 레이더 정보(거리, 속도)를 박스로 표시합니다 (APilot 스타일).", "../assets/offroad/icon_road.png", this));
   toggle_layout->addWidget(horizontal_line());
   // UI Dev Mode with real-time toggle callback
-  auto uiDevModeToggle = new ParamControl("UIDevMode", "UI 개발 모드", "판다/차량 연결 없이 온로드 UI를 테스트합니다. 토글 시 즉시 적용됩니다.", "../assets/offroad/icon_calibration.png", this);
+  // SAFETY: 주행 중에는 비활성화됨
+  auto uiDevModeToggle = new ParamControl("UIDevMode", "UI 개발 모드", "판다/차량 연결 없이 온로드 UI를 테스트합니다. ⚠️ 주행 중에는 비활성화됩니다.", "../assets/offroad/icon_calibration.png", this);
   QObject::connect(uiDevModeToggle, &ParamControl::toggleFlipped, [=](bool state) {
     if (state) {
-      // Start ui_dev_publisher
+      // Start ui_dev_publisher (only if offroad)
       std::system("pkill -f ui_dev_publisher 2>/dev/null; python /data/openpilot/selfdrive/debug/ui_dev_publisher.py &");
     } else {
       // Stop ui_dev_publisher
       std::system("pkill -f ui_dev_publisher");
     }
   });
+  // 주행 중(온로드)에는 토글 비활성화
+  QObject::connect(parent, &SettingsWindow::offroadTransition, uiDevModeToggle, &ParamControl::setEnabled);
   toggle_layout->addWidget(uiDevModeToggle);
   toggle_layout->addWidget(horizontal_line());
 

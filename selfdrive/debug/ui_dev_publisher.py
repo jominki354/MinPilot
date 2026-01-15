@@ -2,6 +2,8 @@
 """
 UI 개발 모드용 더미 메시지 퍼블리셔
 판다/차량 연결 없이 온로드 UI를 테스트할 때 사용합니다.
+
+⚠️ SAFETY: 실제 차량이 연결되면 자동 종료됩니다.
 """
 
 import cereal.messaging as messaging
@@ -9,7 +11,28 @@ import time
 import random
 
 
+def is_car_connected():
+    """판다/차량 연결 여부 체크"""
+    try:
+        # pandaStates 메시지 체크
+        sm = messaging.SubMaster(["pandaStates"], poll=["pandaStates"])
+        sm.update(100)  # 100ms timeout
+        if sm.valid["pandaStates"] and len(sm["pandaStates"].pandaStates) > 0:
+            panda_type = sm["pandaStates"].pandaStates[0].pandaType
+            # UNKNOWN이 아니면 판다 연결됨
+            return panda_type != 0  # 0 = UNKNOWN
+    except Exception:
+        pass
+    return False
+
+
 def main():
+    # SAFETY CHECK: 판다가 연결되어 있으면 실행 안함
+    if is_car_connected():
+        print("⚠️ 판다/차량이 연결되어 있습니다. UI Dev Publisher를 실행할 수 없습니다.")
+        print("실제 주행 데이터와 충돌을 방지하기 위해 종료합니다.")
+        return
+
     pm = messaging.PubMaster(
         [
             "deviceState",
@@ -23,10 +46,16 @@ def main():
     )
 
     print("UI Dev Publisher 시작...")
+    print("⚠️ 판다 연결 시 자동 종료됩니다.")
     print("Ctrl+C로 종료")
 
     frame = 0
     while True:
+        # 주기적으로 판다 연결 체크 (10초마다)
+        if frame % 100 == 0 and is_car_connected():
+            print("⚠️ 판다/차량이 연결되었습니다. 종료합니다.")
+            break
+
         # deviceState
         msg = messaging.new_message("deviceState")
         msg.deviceState.started = True
