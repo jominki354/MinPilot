@@ -1246,31 +1246,26 @@ void OnroadHud::drawSpeedPair(QPainter &p) {
 }
 
 void OnroadHud::drawLaneModeIndicator(QPainter &p) {
-  // Bottom left lane mode indicator
+  // Bottom left lane mode indicator (same style as status indicators)
   int x = 60;
-  int y = rect().bottom() - 180;
+  int y = rect().bottom() - 200;
+  int dotSize = 40;
+  int fontSize = 64;
 
   // Get lane mode status from scene
   UIState *s = uiState();
   bool isLaneless = s->scene.lateralPlan.dynamicLaneProfileStatus;
 
-  // Background pill
-  QString modeText = isLaneless ? "레인리스" : "레인모드";
-  QColor bgColor = isLaneless ? QColor(200, 50, 50, 180) : QColor(50, 150, 50, 180);
-
-  configFont(p, "Open Sans", 48, "Bold");
-  QFontMetrics fm(p.font());
-  int textWidth = fm.horizontalAdvance(modeText);
-  int padding = 24;
-
-  QRect pill(x, y, textWidth + padding * 2, 70);
+  // Status dot
   p.setPen(Qt::NoPen);
-  p.setBrush(bgColor);
-  p.drawRoundedRect(pill, 20, 20);
+  p.setBrush(isLaneless ? QColor(200, 50, 50) : MP_SUCCESS);
+  p.drawEllipse(x, y, dotSize, dotSize);
 
-  // Text
+  // Label
+  QString modeText = isLaneless ? "레인리스" : "레인모드";
+  configFont(p, "Open Sans", fontSize, "Bold");
   p.setPen(Qt::white);
-  p.drawText(x + padding, y + 52, modeText);
+  p.drawText(x + dotSize + 24, y + dotSize - 8, modeText);
 }
 
 void OnroadHud::drawStatusIndicators(QPainter &p) {
