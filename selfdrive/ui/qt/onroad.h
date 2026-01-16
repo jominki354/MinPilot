@@ -113,6 +113,7 @@ private:
   // MinPilot UI functions
   void drawSpeedPair(QPainter &p);
   void drawStatusIndicators(QPainter &p);
+  void drawLaneModeIndicator(QPainter &p);
   void drawRoadNameBar(QPainter &p);
   void drawTopLeftInfo(QPainter &p);
   void drawCarrotCameraInfo(QPainter &p);

@@ -504,6 +504,9 @@ void OnroadHud::paintEvent(QPaintEvent *event) {
 
   // dm icon removed for MinPilot UI
 
+  // MinPilot: Lane mode status indicator (bottom left)
+  drawLaneModeIndicator(p);
+
   // Note: MADS icon removed for MinPilot UI
 
   // MinPilot: ACC/LKAS status indicators (bottom right)
@@ -1242,6 +1245,34 @@ void OnroadHud::drawSpeedPair(QPainter &p) {
   p.drawText(centerX - unitWidth / 2, speedY + 50, speedUnit);  // 여백 2배 (25->50)
 }
 
+void OnroadHud::drawLaneModeIndicator(QPainter &p) {
+  // Bottom left lane mode indicator
+  int x = 60;
+  int y = rect().bottom() - 180;
+
+  // Get lane mode status from scene
+  UIState *s = uiState();
+  bool isLaneless = s->scene.lateralPlan.dynamicLaneProfileStatus;
+
+  // Background pill
+  QString modeText = isLaneless ? "레인리스" : "레인모드";
+  QColor bgColor = isLaneless ? QColor(200, 50, 50, 180) : QColor(50, 150, 50, 180);
+
+  configFont(p, "Open Sans", 48, "Bold");
+  QFontMetrics fm(p.font());
+  int textWidth = fm.horizontalAdvance(modeText);
+  int padding = 24;
+
+  QRect pill(x, y, textWidth + padding * 2, 70);
+  p.setPen(Qt::NoPen);
+  p.setBrush(bgColor);
+  p.drawRoundedRect(pill, 20, 20);
+
+  // Text
+  p.setPen(Qt::white);
+  p.drawText(x + padding, y + 52, modeText);
+}
+
 void OnroadHud::drawStatusIndicators(QPainter &p) {
   // ACC/LKAS status indicators at bottom right
   // 크기 2배 확대
@@ -1263,13 +1294,13 @@ void OnroadHud::drawStatusIndicators(QPainter &p) {
     p.drawText(x + dotSize + 24, y + dy + dotSize - 8, label);  // 여백 조정
   };
 
-  // ACC: Active when engaged and cruise is set
+  // 크루즈: Active when engaged and cruise is set
   bool accActive = engageable && is_cruise_set;
-  drawIndicator(0, "ACC", accActive);
+  drawIndicator(0, "크루즈", accActive);
 
-  // LKAS: Active when MADS enabled and not suspended
+  // 차선유지: Active when MADS enabled and not suspended
   bool lkasActive = madsEnabled && !suspended;
-  drawIndicator(spacing, "LKAS", lkasActive);
+  drawIndicator(spacing, "차선유지", lkasActive);
 }
 
 void OnroadHud::drawRoadNameBar(QPainter &p) {
