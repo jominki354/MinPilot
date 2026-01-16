@@ -23,9 +23,7 @@ public:
   ButtonsWindow(QWidget* parent = 0);
 
 private:
-  QPushButton *dlpBtn;
-
-  const QStringList dlpBtnColors = {"#007d00", "#c92231", "#7d007d"};
+  // DLP button removed - use Settings instead
 
 public slots:
   void updateState(const UIState &s);

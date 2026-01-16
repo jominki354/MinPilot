@@ -220,33 +220,7 @@ ButtonsWindow::ButtonsWindow(QWidget *parent) : QWidget(parent) {
 
   main_layout->addWidget(btns_wrapper, 0, Qt::AlignBottom);
 
-  // Dynamic lane profile button
-  QString initDlpBtn = "";
-  dlpBtn = new QPushButton(initDlpBtn);
-  QObject::connect(dlpBtn, &QPushButton::clicked, [=]() {
-    QUIState::ui_state.scene.dynamic_lane_profile = QUIState::ui_state.scene.dynamic_lane_profile + 1;
-    if (QUIState::ui_state.scene.dynamic_lane_profile > 2) {
-      QUIState::ui_state.scene.dynamic_lane_profile = 0;
-    }
-    if (QUIState::ui_state.scene.dynamic_lane_profile == 0) {
-      Params().put("DynamicLaneProfile", "0", 1);
-      dlpBtn->setText("차선\n전용");
-    } else if (QUIState::ui_state.scene.dynamic_lane_profile == 1) {
-      Params().put("DynamicLaneProfile", "1", 1);
-      dlpBtn->setText("차선\n없음");
-    } else if (QUIState::ui_state.scene.dynamic_lane_profile == 2) {
-      Params().put("DynamicLaneProfile", "2", 1);
-      dlpBtn->setText("자동\n차선");
-    }
-  });
-  dlpBtn->setFixedWidth(200);
-  dlpBtn->setFixedHeight(200);
-  btns_layout->addWidget(dlpBtn, 0, Qt::AlignLeft);
-  btns_layout->addSpacing(35);
-
-  if (QUIState::ui_state.scene.end_to_end) {
-    dlpBtn->hide();
-  }
+  // Dynamic Lane Profile button removed - use Settings instead
 
   setStyleSheet(R"(
     QPushButton {
@@ -261,16 +235,7 @@ ButtonsWindow::ButtonsWindow(QWidget *parent) : QWidget(parent) {
 }
 
 void ButtonsWindow::updateState(const UIState &s) {
-  if (QUIState::ui_state.scene.dynamic_lane_profile == 0) {
-    dlpBtn->setStyleSheet(QString("font-size: 45px; border-radius: 100px; border-color: %1").arg(dlpBtnColors.at(0)));
-    dlpBtn->setText("차선\n전용");
-  } else if (QUIState::ui_state.scene.dynamic_lane_profile == 1) {
-    dlpBtn->setStyleSheet(QString("font-size: 45px; border-radius: 100px; border-color: %1").arg(dlpBtnColors.at(1)));
-    dlpBtn->setText("차선\n없음");
-  } else if (QUIState::ui_state.scene.dynamic_lane_profile == 2) {
-    dlpBtn->setStyleSheet(QString("font-size: 45px; border-radius: 100px; border-color: %1").arg(dlpBtnColors.at(2)));
-    dlpBtn->setText("자동\n차선");
-  }
+  // DLP button removed - settings screen handles this now
 }
 
 // OnroadAlerts
@@ -537,11 +502,7 @@ void OnroadHud::paintEvent(QPaintEvent *event) {
     }
   }
 
-  // dm icon
-  if (!hideDM) {
-    drawIcon(p, radius / 2 + (bdr_s * 2), rect().bottom() - footer_h / 2,
-             dm_img, QColor(0, 0, 0, 70), dmActive ? 1.0 : 0.2);
-  }
+  // dm icon removed for MinPilot UI
 
   // Note: MADS icon removed for MinPilot UI
 
