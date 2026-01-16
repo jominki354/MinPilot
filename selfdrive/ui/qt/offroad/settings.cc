@@ -5,6 +5,7 @@
 #include <string>
 
 #include <QDebug>
+#include <QProcess>
 #include <QScroller>
 #include <QScrollerProperties>
 
@@ -147,7 +148,7 @@ DevicePanel::DevicePanel(SettingsWindow *parent) : ListWidget(parent) {
     }
   });
 
-  // power buttons
+  // power buttons (CarrotPilot style)
   QHBoxLayout *power_layout = new QHBoxLayout();
   power_layout->setSpacing(30);
 
@@ -156,14 +157,40 @@ DevicePanel::DevicePanel(SettingsWindow *parent) : ListWidget(parent) {
   power_layout->addWidget(reboot_btn);
   QObject::connect(reboot_btn, &QPushButton::clicked, this, &DevicePanel::reboot);
 
+  // Git Pull & Reboot 버튼
+  QPushButton *gitpull_btn = new QPushButton("Git Pull");
+  gitpull_btn->setObjectName("gitpull_btn");
+  power_layout->addWidget(gitpull_btn);
+  QObject::connect(gitpull_btn, &QPushButton::clicked, [=]() {
+    if (ConfirmationDialog::confirm("Git Pull 후 재부팅하시겠습니까?", this)) {
+      QString script = "cd /data/openpilot && "
+        "git fetch origin && "
+        "LOCAL=$(git rev-parse HEAD) && "
+        "BRANCH=$(git branch --show-current) && "
+        "REMOTE=$(git rev-parse origin/$BRANCH) && "
+        "if [ $LOCAL != $REMOTE ]; then "
+        "git pull --ff-only && sudo reboot; "
+        "else echo 'Already up to date.'; fi";
+      
+      bool success = QProcess::startDetached("/bin/sh", QStringList() << "-c" << script);
+      if (success) {
+        ConfirmationDialog::alert("업데이트 확인 중...\n변경사항이 있으면 재부팅됩니다.", this);
+      } else {
+        ConfirmationDialog::alert("Git Pull 실행 실패", this);
+      }
+    }
+  });
+
   QPushButton *poweroff_btn = new QPushButton("전원 끄기");
   poweroff_btn->setObjectName("poweroff_btn");
   power_layout->addWidget(poweroff_btn);
   QObject::connect(poweroff_btn, &QPushButton::clicked, this, &DevicePanel::poweroff);
 
   setStyleSheet(R"(
-    #reboot_btn { height: 120px; border-radius: 15px; background-color: #393939; }
-    #reboot_btn:pressed { background-color: #4a4a4a; }
+    #reboot_btn { height: 120px; border-radius: 15px; background-color: #2CE22C; }
+    #reboot_btn:pressed { background-color: #24FF24; }
+    #gitpull_btn { height: 120px; border-radius: 15px; background-color: #2C2CE2; }
+    #gitpull_btn:pressed { background-color: #2424FF; }
     #poweroff_btn { height: 120px; border-radius: 15px; background-color: #E22C2C; }
     #poweroff_btn:pressed { background-color: #FF2424; }
   )");
